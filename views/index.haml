@@ -1,0 +1,8 @@
+%html
+  %head 
+    %link{:href=>'/styles.css', :rel=>'stylesheet', :type=>'text/css'}
+    %title welcome
+  %body
+    #{@content}
+    - if @admin
+      %a{:href=>"./admin?signed_request=#{params['signed_request']}", :title=>'Edit this page (only admins see this)'} admin

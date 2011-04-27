@@ -4,6 +4,5 @@
     %title welcome
   %body
     %form{:action=>'/admin', :method=>'post'}
-      %input{:type=>'hidden', :name=>'signed_request', :value=>params['signed_request']}
       %textarea{:style=>'width:510px; height:400px;', :name=>'content'}=@content
       %input{:type=>'submit', :name=>'Save'}

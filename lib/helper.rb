@@ -5,8 +5,9 @@ require 'active_support'
 class FacebookRequest
  
   def self.decode (signed_request, secret)
-   		#decode data
+   	  #decode data
 	  encoded_sig, payload = signed_request.split('.')
+	  return nil if encoded_sig.nil?
 	  sig = str_to_hex(base64_url_decode(encoded_sig))
 	  data = ActiveSupport::JSON.decode base64_url_decode(payload)
 	

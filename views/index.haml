@@ -5,4 +5,4 @@
   %body
     #{@content}
     - if @admin
-      %a{:href=>"./admin?signed_request=#{params['signed_request']}", :title=>'Edit this page (only admins see this)'} admin
+      %a{:href=>"./admin", :title=>'Edit this page (only admins see this)', :target=>'_top'} admin

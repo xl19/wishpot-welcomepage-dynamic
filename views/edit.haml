@@ -1,8 +1,26 @@
 %html
-  %head 
-    %link{:href=>'/styles.css', :rel=>'stylesheet', :type=>'text/css'}
-    %title welcome
-  %body
-    %form{:action=>'/admin', :method=>'post'}
-      %textarea{:style=>'width:510px; height:400px;', :name=>'content'}=@content
-      %input{:type=>'submit', :name=>'Save'}
+	%head 
+		%link{:href=>'/styles.css', :rel=>'stylesheet', :type=>'text/css'}
+		%title welcome
+	%body
+		%h3 Welcome Page Content
+		%span.wishpot_err=@err_msg
+		%span.wishpot_status=@status_msg
+		%form{:action=>'/admin', :method=>'post', :style=>'margin-top: 1em;'}
+			%textarea{:style=>'width:510px; height:500px;', :name=>'content'}=@content
+			%div{:widht=>'510px'}
+				%a{:href=>"http://facebook.com/anything/pages/#{@page_id}", :target=>'wishpot_preview'} See Page
+				%input{:type=>'submit', :value=>'Save'}
+		%div#fb-root
+		%script{:type=>'text/javascript', :src=>'//connect.facebook.net/en_US/all.js'}
+		%script{:type=>'text/javascript', :src=>'/tiny_mce/tiny_mce.js'}
+		:javascript
+			tinyMCE.init({
+				mode : "textareas",
+				theme : "advanced",
+				theme_advanced_toolbar_location : "top"
+			});
+			FB.init({ 
+				appId:'#{@app_id}', cookie:true, 
+				status:true, xfbml:true 
+			});

@@ -10,7 +10,7 @@ enable :sessions
 class WelcomePage
   include DataMapper::Resource
   property :page_id, String, :key => true
-  property :text, String
+  property :text, Text
   property :admin_id, String
   property :admin_email, String
 end
@@ -22,7 +22,7 @@ configure do
   # is what DM wants. This is also a convenient check wether we're in production
   # / not.
   DataMapper.setup(:default, (ENV["DATABASE_URL"] || "sqlite3:///#{Dir.pwd}/db/development.sqlite3"))
-  DataMapper::Model.raise_on_save_failure = true
+  #DataMapper::Model.raise_on_save_failure = true
   DataMapper.auto_upgrade!
 end
 
@@ -49,12 +49,12 @@ end
 
 post '/' do
 	@content = WelcomePage.get(@page_id).text
-    haml :index
+  haml :index
 end
 
 get '/' do
 	@content = WelcomePage.get(@page_id).text
-    haml :index
+  haml :index
 end
 
 get '/admin' do
@@ -63,15 +63,23 @@ get '/admin' do
 		redirect "https://www.facebook.com/dialog/oauth?client_id=#{@app_id}&redirect_uri=#{URI.escape(request.url.gsub(request.path, ''))}/post-oauth&scope=email" 
 	end
 	@content = WelcomePage.get(@page_id).text
-    haml :edit
+  haml :edit
 end
 
 post '/admin' do
 	pg = WelcomePage.first_or_create({:page_id=>@page_id.to_s}, {:text => params['content']})
 	pg.attributes = {:text => params['content']}
-	p pg.save
-	p "Should be saving [admin? #{@admin}] for page #{@page_id} and content: #{ params['content']}"
-    redirect "/"
+ 	unless pg.save
+		@err_msg = "Error: "
+		pg.errors.each do |e|
+       @err_msg << " #{e.to_s}"
+    end
+		@content = params['content']
+	else
+		@status_msg = "Saved!"
+	end
+	@content = params['content']
+	haml :edit
 end
 
 get '/post-oauth' do

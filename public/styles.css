@@ -6,3 +6,12 @@ body
   font-size: 11px;
   color: #333;
 }
+
+.wishpot_error
+{
+	background-color: red;
+}
+.wishpot_status
+{
+	background-color: silver;
+}

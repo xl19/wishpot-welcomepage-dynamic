@@ -2,6 +2,12 @@
   %head 
     %link{:href=>'/styles.css', :rel=>'stylesheet', :type=>'text/css'}
     %title welcome
+    -if @liked
+      :css
+        .not-fb-fan { display: none; }
+    -else
+      :css
+        .is-fb-fan { display: none; }
   %body
     #{@content}
     - if @admin

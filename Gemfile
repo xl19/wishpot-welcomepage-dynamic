@@ -2,4 +2,4 @@ source :rubygems
 gem 'sinatra'
 gem 'haml'
 gem 'activesupport'
-gem 'datamapper'
+gem 'data_mapper'

@@ -11,4 +11,6 @@
   %body
     #{@content}
     - if @admin
-      %a{:href=>"./admin", :title=>'Edit this page (only admins see this)', :target=>'wishpot_editor'} admin
+      %div{:class=>'admin_banner'}
+        %a{:href=>"./admin", :title=>'Edit this page (only admins see this)', :target=>'wishpot_editor'} Edit Page
+        %span (Only administrators see this)

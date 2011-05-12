@@ -10,7 +10,7 @@
 		%form{:action=>'/admin', :method=>'post', :style=>'margin-top: 1em;'}
 			%textarea{:style=>'width:510px; height:500px;', :name=>'content'}=@content
 			%div{:width=>'510px'}
-				%a{:href=>"http://facebook.com/pages/anything/#{@page_id}", :target=>'wishpot_preview'} See Page
+				%a{:href=>"http://facebook.com/pages/anything/#{@page_id}?sk=app_#{@app_id}", :target=>'wishpot_preview'} See Page
 				%input{:type=>'submit', :value=>'Save', :align=>'right'}
 		%div#fb-root
 		%script{:type=>'text/javascript', :src=>'//connect.facebook.net/en_US/all.js'}

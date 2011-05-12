@@ -48,13 +48,15 @@ before do
 end
 
 post '/' do
-	@content = WelcomePage.get(@page_id).text
+	page = WelcomePage.get(@page_id) 
+	@content = (page.nil?) ? '' : page.text
   haml :index
 end
 
 get '/' do
-	@content = WelcomePage.get(@page_id).text
-  haml :index
+	page = WelcomePage.get(@page_id)
+  @content = (page.nil?) ? '' : page.text
+	haml :index
 end
 
 get '/admin' do

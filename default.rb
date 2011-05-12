@@ -64,7 +64,8 @@ get '/admin' do
 	if session['access_token'].nil?
 		redirect "https://www.facebook.com/dialog/oauth?client_id=#{@app_id}&redirect_uri=#{URI.escape(request.url.gsub(request.path, ''))}/post-oauth&scope=email" 
 	end
-	@content = WelcomePage.get(@page_id).text
+	page = WelcomePage.get(@page_id)
+  @content = (page.nil?) ? "This is your new welcome page - delete me and edit away! \n\n If you're comfortable writing HTML, check out the 'HTML' button in the menu above." : page.text
   haml :edit
 end
 

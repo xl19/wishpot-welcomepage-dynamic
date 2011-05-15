@@ -6,6 +6,7 @@ require 'data_mapper'
 require 'open-uri'
 
 enable :sessions
+set :haml, :format => :html5, :layout=>:layout
 
 class WelcomePage
   include DataMapper::Resource
@@ -13,6 +14,17 @@ class WelcomePage
   property :text, Text
   property :admin_id, String
   property :admin_email, String
+  property :created_at, DateTime, :default=>DateTime.now.new_offset(0)
+	has n, :collected_emails
+end
+
+class CollectedEmail
+	include DataMapper::Resource
+	property :user_id, String
+	property :email_address, String, :key=>true
+  property :created_at, DateTime, :default=>DateTime.now.new_offset(0)	
+	
+	belongs_to :welcome_page, :key=>true
 end
 
 configure do
@@ -88,6 +100,23 @@ post '/admin' do
 	end
 	@content = params['content']
 	haml :edit
+end
+
+# This is the target for a user submitting an email address to the system
+post '/email' do
+	unless @page_id.nil?
+		pg = WelcomePage.first(:page_id=>@page_id)
+		ce = CollectedEmail.first_or_create(:welcome_page=>pg, :email_address=>params[:email])
+	  unless ce.save
+			@err_msg = "Error: "
+			ce.errors.each do |e|
+       @err_msg << " #{e.to_s}"
+    	end
+			@content = pg.text
+			haml :index
+		end
+	end
+  redirect '/'	
 end
 
 get '/post-oauth' do

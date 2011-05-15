@@ -1,0 +1,13 @@
+%html
+  %head 
+    %link{:href=>'/styles.css', :rel=>'stylesheet', :type=>'text/css'}
+    %title welcome
+  %body
+    = yield
+    %div#fb-root
+    %script{:type=>'text/javascript', :src=>'//connect.facebook.net/en_US/all.js'}
+    :javascript
+      FB.init({
+        appId:'#{@app_id}', cookie:true, 
+        status:true, xfbml:true 
+      });

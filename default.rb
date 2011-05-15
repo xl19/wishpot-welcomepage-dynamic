@@ -22,7 +22,6 @@ configure do
   # is what DM wants. This is also a convenient check wether we're in production
   # / not.
   DataMapper.setup(:default, (ENV["DATABASE_URL"] || "sqlite3:///#{Dir.pwd}/db/development.sqlite3"))
-  #DataMapper::Model.raise_on_save_failure = true
   DataMapper.auto_upgrade!
 end
 
@@ -31,9 +30,15 @@ before do
    @page_id = nil
    @liked = false
    @admin = false
-   @app_id = 210073625689149
-   @secret_key = 'ecfa6c4aa238c9bf1d826d91316067aa'
-   
+
+	 if development?
+   	@app_id = 109846262436497
+   	@secret_key = '4d141f0649456fc8695762b80fd016ac'
+	 else
+   	@app_id = 210073625689149
+   	@secret_key = 'ecfa6c4aa238c9bf1d826d91316067aa'
+   end
+	 
    if(!params[:signed_request].nil?)
      fb = FacebookRequest.decode(params[:signed_request], @secret_key)
      if(!fb.nil?)

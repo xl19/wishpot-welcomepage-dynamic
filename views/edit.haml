@@ -6,12 +6,29 @@
 		%h3 Welcome Page Content
 		%span.wishpot_err=@err_msg
 		%span.wishpot_status=@status_msg
-		%div Add a class of "is-fb-fan" to anything you want to show to fans only.  Add a class of "not-fb-fan" to anything you want to show to non-fans only.
 		%form{:action=>'/admin', :method=>'post', :style=>'margin-top: 1em;'}
-			%textarea{:style=>'width:510px; height:500px;', :name=>'content'}=@content
-			%div{:width=>'510px'}
-				%a{:href=>"http://facebook.com/pages/anything/#{@page_id}?sk=app_#{@app_id}", :target=>'wishpot_preview'} See Page
-				%input{:type=>'submit', :value=>'Save', :align=>'right'}
+			%div#page_editor
+				%textarea{:style=>'width:510px; height:500px;', :name=>'content'}=@content
+				%div{:width=>'510px'}
+					%a{:href=>"http://facebook.com/pages/anything/#{@page_id}?sk=app_#{@app_id}", :target=>'wishpot_preview'} See Page
+					%input{:type=>'submit', :value=>'Save', :align=>'right'}
+			%div#help_div
+				%h4 Quick Tips
+				%ol
+					%li 
+						Add a class of 
+						%code is-fb-fan 
+						to anything you want to show to fans only.  Add a class of 
+						%code not-fb-fan 
+						to anything you want to show to non-fans only. ex.
+						%p
+							%code 
+								&lt;div class="is-fb-fan"&gt;
+								%br &nbsp; you are a fan!
+								&lt;/div&gt;
+								%br &lt;div class="not-fb-fan"&gt;
+								&nbsp; you are not a fan.  click 'like'
+								%br &lt;/div&gt;	
 		%div#fb-root
 		%script{:type=>'text/javascript', :src=>'//connect.facebook.net/en_US/all.js'}
 		%script{:type=>'text/javascript', :src=>'/tiny_mce/tiny_mce.js'}

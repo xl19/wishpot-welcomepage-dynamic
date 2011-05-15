@@ -17,3 +17,9 @@ body
 {
 	background-color: silver;
 }
+
+#page_editor { float: left; }
+#help_div { float: left; width: 300px; margin-left: 5px; padding: 5px; border: 1px solid #CCC; background: #F4F4F4;}
+#help_div h4 { margin: 0px; }
+#help_div ol { margin: 10px; padding: 2px; }
+#help_div li { }

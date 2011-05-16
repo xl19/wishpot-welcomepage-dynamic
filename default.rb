@@ -37,11 +37,13 @@ configure do
   DataMapper.auto_upgrade!
 end
 
+
 before do
    #grab tab id
    @page_id = nil
    @liked = false
    @admin = false
+	 @given_email = false
 
 	 if development?
    	@app_id = 109846262436497
@@ -59,9 +61,14 @@ before do
 	     session[:admin] = fb['page']['admin']
 	  end
    end
+
    @page_id = session[:page_id]
    @liked = session[:liked]
    @admin = session[:admin]
+
+	 if(request.cookies["venpop_email_#{@page_id}"])
+	 		@given_email = true
+	 end
 end
 
 post '/' do
@@ -82,7 +89,13 @@ get '/admin' do
 		redirect "https://www.facebook.com/dialog/oauth?client_id=#{@app_id}&redirect_uri=#{URI.escape(request.url.gsub(request.path, ''))}/post-oauth&scope=email" 
 	end
 	page = WelcomePage.get(@page_id)
-  @content = (page.nil?) ? "This is your new welcome page - delete me and edit away! \n\n If you're comfortable writing HTML, check out the 'HTML' button in the menu above." : page.text
+	@email_count = 0
+  if !page.nil?
+		@content = page.text
+		@email_count = page.collected_emails.count
+	else
+		@content = "This is your new welcome page - delete me and edit away! \n\n If you're comfortable writing HTML, check out the 'HTML' button in the menu above." 
+	end
   haml :edit
 end
 
@@ -105,8 +118,9 @@ end
 # This is the target for a user submitting an email address to the system
 post '/email' do
 	unless @page_id.nil?
-		pg = WelcomePage.first(:page_id=>@page_id)
-		ce = CollectedEmail.first_or_create(:welcome_page=>pg, :email_address=>params[:email])
+		pg = WelcomePage.get(@page_id)
+		ce = CollectedEmail.first_or_create(:welcome_page=>pg, :email_address=>(params[:email] || params[:email_address] || params[:address]) )
+		ce.user_id = params[:uid] if(params[:uid])
 	  unless ce.save
 			@err_msg = "Error: "
 			ce.errors.each do |e|
@@ -116,7 +130,16 @@ post '/email' do
 			haml :index
 		end
 	end
+	response.set_cookie("venpop_email_#{@page_id}", { :expires => Time.now+365*24*60*60 } )
   redirect '/'	
+end
+
+get '/download_emails' do
+	if @admin and !@page_id.nil?
+		content_type 'text/csv', :charset => 'utf-8'
+		return CollectedEmail.all(:welcome_page_page_id=>@page_id, :order=>[:created_at.asc]).collect{|e| "#{e.email_address},#{e.created_at}\n"}
+	end
+	'error, try signing in again.'
 end
 
 get '/post-oauth' do

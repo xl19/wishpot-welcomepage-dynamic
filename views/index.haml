@@ -4,6 +4,12 @@
 -else
   :css
     .is-fb-fan { display: none; }
+-if @given_email
+  :css
+    .not-given-email { display: none; }
+-else
+  :css
+    .given-email { display: none; }
 #{@content}
 - if @admin
   %div{:class=>'admin_banner'}

@@ -18,6 +18,8 @@ body
 	background-color: silver;
 }
 
+#venpop_logo {display:block; position: absolute; top: 0; left: 820px;}
+
 #page_editor { float: left; }
 
 #help_div { float: left; width: 300px; margin-left: 5px; }
@@ -25,4 +27,4 @@ body
 #help_div ol { margin: 10px; padding: 2px; }
 #help_div li { margin-bottom: 1em; }
 
-#help_div .box { margin-bottom: 10px; padding: 5px; border: 1px solid #CCC; background: #F4F4F4; }
+#help_div .box { padding: 5px; margin-bottom: 10px; border: 1px solid #CCC; background: #F4F4F4; }

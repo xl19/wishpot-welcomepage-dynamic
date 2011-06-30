@@ -5,18 +5,15 @@ body
   font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
   font-size: 11px;
   color: #333;
+	margin: 0;
+	padding: 0;
+	overflow: hidden; 
 }
 
 .admin_banner {background-color: #F4F4F4; padding: 5px; margin: 5px;}
 
-.wishpot_error
-{
-	background-color: red;
-}
-.wishpot_status
-{
-	background-color: silver;
-}
+.wishpot_error  {	background-color: #FF0000; }
+.wishpot_status {	background-color: #66FF66; }
 
 #venpop_logo {display:block; position: absolute; top: 0; left: 820px;}
 

@@ -10,7 +10,7 @@ set :haml, :format => :html5, :layout=>:layout
 
 class WelcomePage
   include DataMapper::Resource
-  property :page_id, String, :key => true
+  property :page_id, String, :key=>true
   property :text, Text
   property :admin_id, String
   property :admin_email, String
@@ -88,6 +88,9 @@ get '/admin' do
 	if session['access_token'].nil?
 		redirect "https://www.facebook.com/dialog/oauth?client_id=#{@app_id}&redirect_uri=#{URI.escape(request.url.gsub(request.path, ''))}/post-oauth&scope=email" 
 	end
+	
+	return "Sorry, your session may have timed out.  Please go back to your fan page, and click 'edit' again" if @page_id.nil?
+	
 	page = WelcomePage.get(@page_id)
 	@email_count = 0
   if !page.nil?

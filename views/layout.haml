@@ -3,19 +3,30 @@
     %link{:href=>'/styles.css', :rel=>'stylesheet', :type=>'text/css'}
     %title welcome
   %body
-    = yield
-    %div#fb-root
-    %script{:type=>'text/javascript', :src=>'//connect.facebook.net/en_US/all.js'}
-    %script{:type=>'text/javascript', :src=>'/scripts.js'}
     :javascript
-      FB.init({
-        appId:'#{@app_id}', cookie:true, 
-        status:true, xfbml:true 
-      });
-      FB.getLoginStatus(function(response) {
-        if (response.session) {
-          appendDetailsToForm(response.session); 
-        } else {
-          // no user session available, someone you dont know
-        }
-      });
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId  : '#{@app_id}',
+          status : true, // check login status
+          cookie : true, // enable cookies to allow the server to access the session
+          xfbml  : true  // parse XFBML
+        });
+        FB.getLoginStatus(function(response) {
+          if (response.session) {
+            appendDetailsToForm(response.session); 
+          } else {
+            // no user session available, someone you dont know
+          }
+        });
+        FB.Canvas.setSize();
+      };
+      (function() {
+        var e = document.createElement('script');
+        e.src = document.location.protocol + '//connect.facebook.net/en_US/all.js';
+        e.async = true;
+        document.getElementById('fb-root').appendChild(e);
+      }());
+    %div#fb-root
+    = yield
+    %script{:type=>'text/javascript', :src=>'/scripts.js'}
+    

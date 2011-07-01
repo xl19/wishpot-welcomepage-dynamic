@@ -11,3 +11,11 @@ function appendDetailsToForm(session)
 			forms[i].appendChild(iuid);
 	}
 }
+
+function attachOnload(myFunction)
+{
+  if (window.addEventListener) // W3C standard
+    window.addEventListener('load', myFunction, false); // NB **not** 'onload'
+  else if (window.attachEvent) // Microsoft
+    window.attachEvent('onload', myFunction);
+}

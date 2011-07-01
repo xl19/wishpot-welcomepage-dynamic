@@ -17,8 +17,4 @@
   %div{:class=>'admin_banner'}
     %a{:href=>"./admin", :title=>'Edit this page (only admins see this)', :target=>'wishpot_editor'} Edit Page
     %span (Only administrators see this)
-:javascript
-  attachOnload(function(){
-    if(typeof(FB) != 'undefined')
-      FB.Canvas.setSize();
-  });
+

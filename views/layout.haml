@@ -3,6 +3,7 @@
     %link{:href=>'/styles.css', :rel=>'stylesheet', :type=>'text/css'}
     %title welcome
   %body
+    %div#fb-root
     :javascript
       window.fbAsyncInit = function() {
         FB.init({
@@ -26,7 +27,6 @@
         e.async = true;
         document.getElementById('fb-root').appendChild(e);
       }());
-    %div#fb-root
     = yield
     %script{:type=>'text/javascript', :src=>'/scripts.js'}
     

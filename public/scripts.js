@@ -19,3 +19,8 @@ function attachOnload(myFunction)
   else if (window.attachEvent) // Microsoft
     window.attachEvent('onload', myFunction);
 }
+
+attachOnload(function(){
+    if(typeof(FB) != 'undefined' && typeof(FB.Canvas) != 'undefined')
+      FB.Canvas.setSize();
+});

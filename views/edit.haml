@@ -3,6 +3,8 @@
 %span{:style=>'font-size: 1.5em'} 
   %b Welcome Page 
   Editor
+%span Editing:
+%vp:pagename
 %span.wishpot_err=@err_msg
 %span.wishpot_status=@status_msg
 %form{:action=>'/admin', :method=>'post', :style=>'margin-top: 1em;'}
@@ -70,3 +72,5 @@
       {title : 'Non-Fans Only', inline : 'span', classes : 'not-fb-fan'}
     ],    extended_valid_elements : "fb:like[href|send|width|show_faces|font]|"
   });
+
+  

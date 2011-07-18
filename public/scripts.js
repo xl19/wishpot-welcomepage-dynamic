@@ -20,6 +20,31 @@ function attachOnload(myFunction)
     window.attachEvent('onload', myFunction);
 }
 
+function replaceTags(tagCollection, replacementNode)
+{
+  for(var i=0;i<tagCollection.length;i++)
+  {
+    tagCollection[i].parentNode.insertBefore(replacementNode, tagCollection[i]);
+    tagCollection[i].parentNode.removeChild(tagCollection[i]);
+  }
+}
+
+function parseVenpopML()
+{
+  //for markup that requires facebook
+  if(typeof(FB) != 'undefined' && typeof(FB.Canvas) != 'undefined')
+  {
+    var tags = document.getElementsByTagName('vp:pagename');
+    if(null != tags && tags.length > 0 && VP.PageId != null)
+    {
+      FB.api('/'+VP.PageId, function(response) {
+        if(response != undefined)
+          replaceTags(tags, document.createTextNode(response.name));
+      });
+    }
+  }  
+}
+
 attachOnload(function(){
     if(typeof(FB) != 'undefined' && typeof(FB.Canvas) != 'undefined')
       FB.Canvas.setSize();

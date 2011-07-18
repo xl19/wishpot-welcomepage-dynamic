@@ -55,7 +55,7 @@ before do
 	 
    if(!params[:signed_request].nil?)
      fb = FacebookRequest.decode(params[:signed_request], @secret_key)
-     if(!fb.nil?)
+     unless(fb.nil?)
 	   	 session[:page_id] = fb['page']['id']
 	     session[:liked] = fb['page']['liked']
 	     session[:admin] = fb['page']['admin']

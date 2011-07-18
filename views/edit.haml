@@ -1,72 +1,72 @@
 %a{:href=>'http://www.venpop.com', :target=>'_blank', :id=>'venpop_logo'} 
-	%img{:src=>'/venpop-30.png', :border=>'0'}
+  %img{:src=>'/venpop-30.png', :border=>'0'}
 %span{:style=>'font-size: 1.5em'} 
-	%b Welcome Page 
-	Editor
+  %b Welcome Page 
+  Editor
 %span.wishpot_err=@err_msg
 %span.wishpot_status=@status_msg
 %form{:action=>'/admin', :method=>'post', :style=>'margin-top: 1em;'}
-	%div#page_editor
-		%textarea{:style=>'width:510px; height:500px;', :name=>'content'}=@content
-		%div{:width=>'510px'}
-			%a{:href=>"http://facebook.com/pages/anything/#{@page_id}?sk=app_#{@app_id}", :target=>'wishpot_preview'} See Page
-			%input{:type=>'submit', :value=>'Save', :align=>'right'}
-	%div#help_div
-		%div.box
-			%h4 Quick Tips
-			%ol
-				%li 
-					Clicking the 
-					%span{:style=>'color: #064A7A; font-size: smaller;'} HTML 
-					button to the left will let you edit the raw HTML of your welcome page
-				%li 
-					Add a class of 
-					%code is-fb-fan 
-					to anything you want to show to fans only.  Add a class of 
-					%code not-fb-fan 
-					to anything you want to show to non-fans only. ex.
-					%p
-						%code 
-							&lt;div class="is-fb-fan"&gt;
-							%br &nbsp; you are a fan!
-							&lt;/div&gt;
-							%br &lt;div class="not-fb-fan"&gt;
-							&nbsp; you are not a fan.  click 'like'
-							%br &lt;/div&gt;
-				%li
-					To collect email addresses, use a form like this in your page.  Note the class
-					%code not-given-email
-					which will only show this form if the user hasn't provided their e-mail address:
-					%p
-					%code
-						&lt;form action="/email" method="post" class="not-given-email"&gt;
-						%br &nbsp;&lt;input type="text" name="email"&gt;
-						&nbsp;&lt;input type="submit"&gt;
-						%br &lt/form&gt;	
-		%div.box
-			%h4 Email Collection
-			%p
-				You have collected 
-				%b=@email_count 
-				email addresses with your welcome page.	
-			%p
-				Email addresses can be downloaded
-				%a{:href=>'/download_emails'} here
-		%script{:type=>'text/javascript', :src=>'/tiny_mce/tiny_mce.js'}
+  %div#page_editor
+    %textarea{:style=>'width:510px; height:500px;', :name=>'content'}=@content
+    %div{:width=>'510px'}
+      %a{:href=>"http://facebook.com/pages/anything/#{@page_id}?sk=app_#{@app_id}", :target=>'wishpot_preview'} See Page
+      %input{:type=>'submit', :value=>'Save', :align=>'right'}
+  %div#help_div
+    %div.box
+      %h4 Quick Tips
+      %ol
+        %li 
+          Clicking the 
+          %span{:style=>'color: #064A7A; font-size: smaller;'} HTML 
+          button to the left will let you edit the raw HTML of your welcome page
+        %li 
+          Add a class of 
+          %code is-fb-fan 
+          to anything you want to show to fans only.  Add a class of 
+          %code not-fb-fan 
+          to anything you want to show to non-fans only. ex.
+          %p
+            %code 
+              &lt;div class="is-fb-fan"&gt;
+              %br &nbsp; you are a fan!
+              &lt;/div&gt;
+              %br &lt;div class="not-fb-fan"&gt;
+              &nbsp; you are not a fan.  click 'like'
+              %br &lt;/div&gt;
+        %li
+          To collect email addresses, use a form like this in your page.  Note the class
+          %code not-given-email
+          which will only show this form if the user hasn't provided their e-mail address:
+          %p
+          %code
+            &lt;form action="/email" method="post" class="not-given-email"&gt;
+            %br &nbsp;&lt;input type="text" name="email"&gt;
+            &nbsp;&lt;input type="submit"&gt;
+            %br &lt/form&gt;  
+    %div.box
+      %h4 Email Collection
+      %p
+        You have collected 
+        %b=@email_count 
+        email addresses with your welcome page.  
+      %p
+        Email addresses can be downloaded
+        %a{:href=>'/download_emails'} here
+    %script{:type=>'text/javascript', :src=>'/tiny_mce/tiny_mce.js'}
 :javascript
-	tinyMCE.init({
-		mode : "textareas",
-		theme : "advanced",
-		theme_advanced_toolbar_location : "top",
-		theme_advanced_toolbar_align : "left",
-		theme_advanced_statusbar_location : "bottom",
-		plugins: "save,preview,table,autosave,media,searchreplace,style",
-		theme_advanced_buttons1 : "save,preview,restoredraft,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect,fontselect,fontsizeselect",
-		theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,code,|,styleprops,forecolor,backcolor",
-		theme_advanced_buttons3 : "tablecontrols,|,hr,removeformat,visualaid,|,iespell,media,advhr,",
-		content_css : "/styles.css", 
-		style_formats : [
-			{title : 'Fans Only', inline : 'span', classes : 'is-fb-fan'},
-			{title : 'Non-Fans Only', inline : 'span', classes : 'not-fb-fan'}
-		],
-	});
+  tinyMCE.init({
+    mode : "textareas",
+    theme : "advanced",
+    theme_advanced_toolbar_location : "top",
+    theme_advanced_toolbar_align : "left",
+    theme_advanced_statusbar_location : "bottom",
+    plugins: "save,preview,table,autosave,media,searchreplace,style",
+    theme_advanced_buttons1 : "save,preview,restoredraft,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect,fontselect,fontsizeselect",
+    theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,code,|,styleprops,forecolor,backcolor",
+    theme_advanced_buttons3 : "tablecontrols,|,hr,removeformat,visualaid,|,iespell,media,advhr,",
+    content_css : "/styles.css", 
+    style_formats : [
+      {title : 'Fans Only', inline : 'span', classes : 'is-fb-fan'},
+      {title : 'Non-Fans Only', inline : 'span', classes : 'not-fb-fan'}
+    ],    extended_valid_elements : "fb:like"
+  });

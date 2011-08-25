@@ -12,9 +12,9 @@
 -else
   :css
     .given-email { display: none; }
-#{@content}
 - if @admin
   %div{:class=>'admin_banner'}
     %a{:href=>"./admin", :title=>'Edit this page (only admins see this)', :target=>'wishpot_editor'} Edit Page
     %span (Only administrators see this)
+#{@content}
 

@@ -7,7 +7,7 @@ body
   color: #333;
 }
 
-.admin_banner {background-color: #F4F4F4; padding: 5px; margin: 5px;}
+.admin_banner {background-color: #F4F4F4; padding: 5px; margin: 5px; z-index:99; }
 
 .wishpot_error  {	background-color: #FF0000; }
 .wishpot_status {	background-color: #66FF66; }

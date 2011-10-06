@@ -44,27 +44,24 @@ before do
    @liked = false
    @admin = false
 	 @given_email = false
-
-	 if development?
-   	@app_id = 109846262436497
-   	@secret_key = '4d141f0649456fc8695762b80fd016ac'
-	 else
-   	@app_id = 210073625689149
-   	@secret_key = 'ecfa6c4aa238c9bf1d826d91316067aa'
-   end
 	 
    if(!params[:signed_request].nil?)
-     fb = FacebookRequest.decode(params[:signed_request], @secret_key)
+     fb = FacebookRequest.decode(params[:signed_request], session[:secret_key])
      unless(fb.nil?)
 	   	 session[:page_id] = fb['page']['id']
 	     session[:liked] = fb['page']['liked']
 	     session[:admin] = fb['page']['admin']
+	     #these values are only set if we didn't pass in an existing secret
+	     session[:app_id] = fb['app_id'] if !fb['app_id'].nil?
+	     session[:secret_key] = fb['secret_key'] if !fb['secret_key'].nil?
 	  end
    end
 
    @page_id = session[:page_id]
    @liked = session[:liked]
    @admin = session[:admin]
+   @app_id = session[:app_id]
+   @secret_key = session[:secret_key]
 
 	 if(request.cookies["venpop_email_#{@page_id}"])
 	 		@given_email = true

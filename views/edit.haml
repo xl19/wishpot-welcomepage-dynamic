@@ -36,15 +36,19 @@
               &nbsp; you are not a fan.  click 'like'
               %br &lt;/div&gt;
         %li
-          To collect email addresses, use a form like this in your page.  Note the class
+          To 
+          %b collect email addresses
+          use a form like this in your page. The class
           %code not-given-email
-          which will only show this form if the user hasn't provided their e-mail address:
+          will only show this form if the user hasn't provided their e-mail address:
           %p
           %code
             &lt;form action="/email" method="post" class="not-given-email"&gt;
             %br &nbsp;&lt;input type="text" name="email"&gt;
             &nbsp;&lt;input type="submit"&gt;
             %br &lt/form&gt;
+          %br
+          You can also add arbitrary fields to this page, which will be stored as well.
         %li
           Be sure to review Facebook's 
           %a{:href=>'http://www.facebook.com/brandpermissions/', :target=>'_blank'} brand guidelines

@@ -23,7 +23,7 @@ class CollectedEmail
 	property :user_id, String
 	property :email_address, String, :key=>true
   property :created_at, DateTime, :default=>DateTime.now.new_offset(0)	
-	
+	property :details, Text
 	belongs_to :welcome_page, :key=>true
 end
 
@@ -119,8 +119,12 @@ end
 post '/email' do
 	unless @page_id.nil?
 		pg = WelcomePage.get(@page_id)
-		ce = CollectedEmail.first_or_create(:welcome_page=>pg, :email_address=>(params[:email] || params[:email_address] || params[:address]) )
+		ce = CollectedEmail.first_or_create(:welcome_page=>pg, :email_address=>(params[:email] || params[:email_address]) )
 		ce.user_id = params[:uid] if(params[:uid])
+		details = Array.new
+		params.each{|n,v| details << "#{n}: #{v}" if n != 'email' && n != 'uid'}
+		ce.details = details*', '
+		
 	  unless ce.save
 			@err_msg = "Error: "
 			ce.errors.each do |e|
@@ -137,7 +141,7 @@ end
 get '/download_emails' do
 	if @admin and !@page_id.nil?
 		content_type 'text/csv', :charset => 'utf-8'
-		return CollectedEmail.all(:welcome_page_page_id=>@page_id, :order=>[:created_at.asc]).collect{|e| "#{e.email_address},#{e.created_at}\n"}
+		return "Email Address, Created Time, Details\n" + CollectedEmail.all(:welcome_page_page_id=>@page_id, :order=>[:created_at.asc]).collect{|e| "#{e.email_address},#{e.created_at},\"#{e.details}\"\n"}.to_s
 	end
 	'error, try signing in again.'
 end
@@ -156,7 +160,7 @@ get '/post-oauth' do
 		pg.save
 		redirect '/admin'
 	rescue
-		p token_url
+		#p token_url
 		"Error authenticating with facebook: #{$!}"
 	end
 end

@@ -44,7 +44,11 @@
             &lt;form action="/email" method="post" class="not-given-email"&gt;
             %br &nbsp;&lt;input type="text" name="email"&gt;
             &nbsp;&lt;input type="submit"&gt;
-            %br &lt/form&gt;  
+            %br &lt/form&gt;
+        %li
+          Be sure to review Facebook's 
+          %a{:href=>'http://www.facebook.com/brandpermissions/', :target=>'_blank'} brand guidelines
+          when writing copy or using Facebook-related images.
     %div.box
       %h4 Email Collection
       %p
@@ -70,7 +74,8 @@
     style_formats : [
       {title : 'Fans Only', inline : 'span', classes : 'is-fb-fan'},
       {title : 'Non-Fans Only', inline : 'span', classes : 'not-fb-fan'}
-    ],    extended_valid_elements : "fb:like[href|send|width|show_faces|font]|"
+    ],
+    extended_valid_elements : "fb:like[href|send|width|show_faces|font]|"
   });
 
   

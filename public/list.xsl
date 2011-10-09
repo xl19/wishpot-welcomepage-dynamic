@@ -15,10 +15,16 @@
 						<xsl:attribute name="href">
     						<xsl:value-of select="link" />
   						</xsl:attribute>
+						<xsl:attribute name="class">image photo handleError</xsl:attribute>
+						<xsl:attribute name="target">_top</xsl:attribute>
 						<img>
 							<xsl:attribute name="src">
-    							<xsl:value-of select="wp:SmallImage/wp:url" />
-  							</xsl:attribute>
+    						<xsl:value-of select="wp:SmallImage/wp:url" />
+  						</xsl:attribute>
+  						<xsl:attribute name="alt">
+    						<xsl:value-of select="title" />
+  						</xsl:attribute>
+							<xsl:attribute name="class">prodPic</xsl:attribute>
 						</img>
 					</a>
 				</div>
@@ -26,8 +32,9 @@
 					<div class="info1">
 						<a>
 							<xsl:attribute name="href">
-    							<xsl:value-of select="link" />
-  							</xsl:attribute>
+    						<xsl:value-of select="link" />
+  						</xsl:attribute>
+  						<xsl:attribute name="target">_top</xsl:attribute>
 							<xsl:value-of select="title"/>
 						</a>
 					</div>

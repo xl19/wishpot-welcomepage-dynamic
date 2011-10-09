@@ -6,7 +6,7 @@
 <xsl:output method='html' version='1.0' encoding='utf-8' indent='no'/>
 
 <xsl:template match="/">
-	<ol>  
+	<ol class="fluid items size4 fullborder containfloat">  
       <xsl:for-each select="rss/channel/item">
         <li>
 			<div class="border">

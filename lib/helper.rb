@@ -6,7 +6,8 @@ class FacebookRequest
   
   APPLICATION_KEYS = Hash[
     109846262436497 => '4d141f0649456fc8695762b80fd016ac', #development key
-    210073625689149 => 'ecfa6c4aa238c9bf1d826d91316067aa'  #original production key
+    210073625689149 => 'ecfa6c4aa238c9bf1d826d91316067aa', #original production key
+    113028492140978 => '52b497d083a4396b5c474c4aa503e3c2'  #second production app
     ]
  
   #In addition to decoding the signed request, this method is also responsible for figuring out what 

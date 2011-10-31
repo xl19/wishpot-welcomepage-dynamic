@@ -35,8 +35,13 @@ configure do
   # / not.
   DataMapper.setup(:default, (ENV["DATABASE_URL"] || "sqlite3:///#{Dir.pwd}/db/development.sqlite3"))
   DataMapper.auto_upgrade!
+  FB_CONFIG = YAML.load_file('config/facebook_apps.yml')
 end
 
+#Returns the current application in the config
+def current_app
+  FacebookRequest.APPS_BY_ID[session[:app_id]]
+end
 
 before do
    #grab tab id
@@ -93,9 +98,12 @@ get '/admin' do
   if !page.nil?
 		@content = page.text
 		@email_count = page.collected_emails.count
-	else
-		@content = "This is your new welcome page - delete me and edit away! \n\n If you're comfortable writing HTML, check out the 'HTML' button in the menu above." 
 	end
+
+	if (@content.nil? or @content.length == 0) and !current_app['default'].nil?
+	  @content = IO.read("views/app_templates/#{current_app['default']}")
+  end
+	
   haml :edit
 end
 

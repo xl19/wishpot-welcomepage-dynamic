@@ -4,11 +4,10 @@ require 'active_support'
 
 class FacebookRequest
   
-  APPLICATION_KEYS = Hash[
-    109846262436497 => '4d141f0649456fc8695762b80fd016ac', #development key
-    210073625689149 => 'ecfa6c4aa238c9bf1d826d91316067aa', #original production key
-    113028492140978 => '52b497d083a4396b5c474c4aa503e3c2'  #second production app
-    ]
+  #A hash of the apps by id, for fast lookups
+  def self.APPS_BY_ID
+    @@applications ||= FB_CONFIG.inject({}) { |h,(k,v)| h[v['id']] = v; h }
+  end
  
   #In addition to decoding the signed request, this method is also responsible for figuring out what 
   #application we are on, and will return a secret_key and app_id as part of the data returned if you 
@@ -27,10 +26,10 @@ class FacebookRequest
 	  return check_sig(secret, payload, sig) ? data : nil unless secret.nil?
 	  
 	  #if we don't have one, iterate through the possibilities
-	  APPLICATION_KEYS.each{|k,v|
-	    if check_sig(v, payload, sig)
-	      data['app_id'] = k
-	      data['secret_key'] = v
+	  FB_CONFIG.each_value{|app|
+	    if check_sig(app['secret'], payload, sig)
+	      data['app_id'] = app['id']
+	      data['secret_key'] = app['secret']
 	      return data
       end
 	  }

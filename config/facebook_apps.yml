@@ -1,0 +1,49 @@
+development:
+  id: 109846262436497
+  secret: 4d141f0649456fc8695762b80fd016ac
+  name: Welcome Page Developer
+  default: sweepstakes.html
+production:
+  id: 210073625689149
+  secret: ecfa6c4aa238c9bf1d826d91316067aa
+  name: Welcome Page
+production2:
+  id: 113028492140978
+  secret: 52b497d083a4396b5c474c4aa503e3c2
+  name: Welcome Page
+email:
+  id: 168972276525968
+  secret: b086d7c826bff4e053bb970006cd19b9
+  name: Email Subscription
+  default: email_subscription.html
+fan:
+  id: 280876111946663
+  secret: 3fd1e9a8da037f69d4860974b7e62a50
+  name: Fan Offer
+sweepstakes:
+  id: 275513219154917
+  secret: 4c091aff56f112edbd24b29441f6fc18
+  name: Sweepstakes
+  default: sweepstakes.html
+coupon:
+  id: 166089790151083
+  secret: 5f3cd75ec859bb2fc868dc28787eb031
+  name: Coupons
+special:
+  id: 247848525263697
+  secret: 42329dd6b0687bd2b346f0258a4f3e4d
+  name: Special Collection
+brochure:
+  id: 139441986157918
+  secret: 347df1b572db05c94db59481cae36944
+  name: Brochure
+  default: brochure.html
+contact:
+  id: 278898725475551
+  secret: e86f456c7d925ea562347a56efafeead
+  name: Contact Us
+  default: contact_us.html
+custom:
+  id: 237760336282432
+  secret: 06152365b1013f7e5e5796065eb53841
+  name: Custom Tab

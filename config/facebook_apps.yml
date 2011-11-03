@@ -20,6 +20,7 @@ fan:
   id: 280876111946663
   secret: 3fd1e9a8da037f69d4860974b7e62a50
   name: Fan Offer
+  default: fan_offer.html
 sweepstakes:
   id: 275513219154917
   secret: 4c091aff56f112edbd24b29441f6fc18

@@ -1,6 +1,7 @@
 require 'base64'
 require 'openssl'
 require 'active_support'
+require 'net/https'
 
 class FacebookRequest
   
@@ -38,6 +39,25 @@ class FacebookRequest
 	  return nil
   end
   
+  #Currently this is just a hard-coded list of facebook ids
+  def self.user_is_app_admin(access_token_param)
+    u = self.get_user(access_token_param)
+    ['4810243'].include?(u['id'])
+  end
+  
+  #If you leave the auth_code nil, grabs it for the app, not a user
+  def self.get_access_token(app_id, secret, auth_code=nil, redirect_uri=nil)
+    token_url = "https://graph.facebook.com/oauth/access_token?client_id=#{app_id}&client_secret=#{secret}"
+    token_url += "&code=#{auth_code}" unless auth_code.nil?
+    token_url += "&redirect_uri=#{redirect_uri}" unless redirect_uri.nil?
+    #p token_url
+    return open(token_url).string
+  end
+  
+  def self.get_user(access_token_param)
+  	return JSON.parse open("https://graph.facebook.com/me?#{URI.escape(access_token_param)}").string
+  end
+  
   
   private
   
@@ -61,4 +81,18 @@ class FacebookRequest
       end.join
     end
 
+end
+
+# Patch to make sure we load the certificates for facebook
+# http://jimneath.org/2011/10/19/ruby-ssl-certificate-verify-failed.html
+module Net
+  class HTTP
+    alias_method :original_use_ssl=, :use_ssl=
+    
+    def use_ssl=(flag)
+      self.ca_file = 'lib/ca-bundle.crt'
+      self.verify_mode = OpenSSL::SSL::VERIFY_PEER
+      self.original_use_ssl = flag
+    end
+  end
 end

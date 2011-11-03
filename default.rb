@@ -154,15 +154,18 @@ get '/download_emails' do
 	'error, try signing in again.'
 end
 
+get '/admin_download_emails' do
+	if FacebookRequest.user_is_app_admin(session['access_token'])
+		content_type 'text/csv', :charset => 'utf-8'
+		return "Email Address, Facebook Id, Facebook Page, Created At\n" + WelcomePage.all( :order=>[:created_at.asc]).collect{|e| "#{e.admin_email},#{e.admin_id},#{e.page_id},#{e.created_at}\n"}.to_s
+	end
+	'error, try signing in again.'
+end
+
 get '/post-oauth' do
-	#grab the access token
-	OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
-	token_url = "https://graph.facebook.com/oauth/access_token?client_id=#{@app_id}&redirect_uri=#{URI.escape(request.url.gsub(request.path, '').gsub('?'+request.query_string, ''))}/post-oauth&client_secret=#{@secret_key}&code=#{params[:code]}"
 	begin
-		resp_parts = open(token_url).string.split('&')
-		session['access_token'] = resp_parts[0].gsub('access_token=', '')
-		#grab the user and update the db
-		me = JSON.parse open("https://graph.facebook.com/me?access_token=#{URI.escape(session['access_token'])}").string
+		session['access_token'] = FacebookRequest.get_access_token(@app_id, @secret_key, params[:code], URI.escape(request.url.gsub(request.path, '').gsub('?'+request.query_string, ''))+"/post-oauth")
+		me = FacebookRequest.get_user(session['access_token'])
 		pg = WelcomePage.first_or_create({:page_id=>@page_id.to_s})
 		pg.attributes = {:admin_id => me['id'], :admin_email=>me['email']}
 		pg.save

@@ -1,8 +1,10 @@
+%style{:type => "text/css", :media => "screen"}
+  :plain
+    body { padding: 20px; }
 %a{:href=>'http://www.venpop.com', :target=>'_blank', :id=>'venpop_logo'} 
   %img{:src=>'/venpop-30.png', :border=>'0'}
 %span{:style=>'font-size: 1.5em'} 
-  %b Welcome Page 
-  Editor
+  %strong=current_app['name'] 
 %span Editing:
 %vp:pagename
 %span.wishpot_err=@err_msg
@@ -16,7 +18,7 @@
   %div#help_div
     %div.box
       %h4 Quick Tips
-      %ol
+      %ol.bulleted
         %li 
           Clicking the 
           %span{:style=>'color: #064A7A; font-size: smaller;'} HTML 
@@ -37,7 +39,7 @@
               %br &lt;/div&gt;
         %li
           To 
-          %b collect email addresses
+          %strong.strong collect email addresses
           use a form like this in your page. The class
           %code not-given-email
           will only show this form if the user hasn't provided their e-mail address:
@@ -57,8 +59,10 @@
       %h4 Email Collection
       %p
         You have collected 
-        %b=@email_count 
-        email addresses with your welcome page.  
+        %strong=@email_count 
+        email addresses with the 
+        =current_app['name']
+        app.  
       %p
         Email addresses can be downloaded
         %a{:href=>'/download_emails'} here
@@ -79,7 +83,7 @@
       {title : 'Fans Only', inline : 'span', classes : 'is-fb-fan'},
       {title : 'Non-Fans Only', inline : 'span', classes : 'not-fb-fan'}
     ],
-    extended_valid_elements : "fb:like[href|send|width|show_faces|font],vp:list[id]"
+    extended_valid_elements : "fb:like[href|send|width|show_faces|font],vp:list[id|count]"
   });
 
   

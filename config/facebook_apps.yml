@@ -3,6 +3,10 @@ development:
   secret: 4d141f0649456fc8695762b80fd016ac
   name: Welcome Page Developer
   default: sweepstakes.html
+development2:
+  id: 143077055791846
+  secret: 22c9b2c7b14721ac513a2f0ecaccf404
+  name: Welcome Page Two Developer
 production:
   id: 210073625689149
   secret: ecfa6c4aa238c9bf1d826d91316067aa

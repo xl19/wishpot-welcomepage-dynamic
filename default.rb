@@ -11,6 +11,7 @@ set :haml, :format => :html5, :layout=>:layout
 class WelcomePage
   include DataMapper::Resource
   property :page_id, String, :key=>true
+  property :app_id, String
   property :text, Text
   property :admin_id, String
   property :admin_email, String
@@ -51,7 +52,9 @@ before do
 	 @given_email = false
 	 
    if(!params[:signed_request].nil?)
-     fb = FacebookRequest.decode(params[:signed_request], session[:secret_key])
+     # We used to pass a secret key in here, but we can't cache the key in the session because
+     # users may switch apps mid-session, which would mean we'd need to re-up the secret key, etc
+     fb = FacebookRequest.decode(params[:signed_request])
      unless(fb.nil?)
 	   	 session[:page_id] = fb['page']['id']
 	     session[:liked] = fb['page']['liked']
@@ -110,6 +113,8 @@ end
 post '/admin' do
 	pg = WelcomePage.first_or_create({:page_id=>@page_id.to_s}, {:text => params['content']})
 	pg.attributes = {:text => params['content']}
+	# start back-filling old pages with their app id's
+	pg.attributes = {:app_id => @app_id} if pg.app_id.nil?
  	unless pg.save
 		@err_msg = "Error: "
 		pg.errors.each do |e|

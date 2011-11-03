@@ -13,7 +13,7 @@ class FacebookRequest
   #In addition to decoding the signed request, this method is also responsible for figuring out what 
   #application we are on, and will return a secret_key and app_id as part of the data returned if you 
   #*do not* pass in a secret.  If you do pass in a secret, will simply validate against it
-  def self.decode (signed_request, secret)
+  def self.decode (signed_request, secret=nil)
    	#decode data
 	  encoded_sig, payload = signed_request.split('.')
 	  return nil if encoded_sig.nil?

@@ -12,7 +12,7 @@ body
 .wishpot_error  {	background-color: #FF0000; }
 .wishpot_status {	background-color: #66FF66; }
 
-#venpop_logo {display:block; position: absolute; top: 0; left: 820px;}
+#venpop_logo {display:block; position: absolute; top: 20px; left: 820px;}
 
 #page_editor { float: left; }
 

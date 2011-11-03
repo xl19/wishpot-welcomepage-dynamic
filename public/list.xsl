@@ -13,7 +13,8 @@
 				<div class="top">
 					<a>
 						<xsl:attribute name="href">
-    						<xsl:value-of select="link" />
+							<xsl:value-of select="concat('http://apps.facebook.com/wishpot/', substring-after(link, 'http://www.wishpot.com/'))" />
+							
   						</xsl:attribute>
 						<xsl:attribute name="class">image photo handleError</xsl:attribute>
 						<xsl:attribute name="target">_top</xsl:attribute>
@@ -32,7 +33,7 @@
 					<div class="info1">
 						<a>
 							<xsl:attribute name="href">
-    						<xsl:value-of select="link" />
+    						<xsl:value-of select="concat('http://apps.facebook.com/wishpot/', substring-after(link, 'http://www.wishpot.com/'))" />
   						</xsl:attribute>
   						<xsl:attribute name="target">_top</xsl:attribute>
 							<xsl:value-of select="title"/>

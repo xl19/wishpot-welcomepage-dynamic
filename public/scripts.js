@@ -57,7 +57,7 @@ function parseVenpopML()
 			
 			    
 			    var xdr = new XDomainRequest(); 
-			   
+			   xdr.contentType = "text/xml";
 				xdr.onerror = function () { console.log('err');}; //these callbacks all workaround ie9 bugs
 				xdr.ontimeout = function () { console.log('timeout');  };
 				xdr.onprogress = function () { console.log('progress');};

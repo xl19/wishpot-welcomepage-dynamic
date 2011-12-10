@@ -63,7 +63,7 @@ function parseVenpopML()
 				xdr.onprogress = function () { alert('progress');};
 				xdr.onload = function() { alert('done'); };
 				xdr.timeout = 10000;
-				xdr.open("get", "//www.wishpot.com/public/rss/list.aspx?list="+listTags[i].getAttribute('id')+"&limit="+ listTags[i].getAttribute('count'));
+				xdr.open("get", "http://www.wishpot.com/public/rss/list.aspx?list="+listTags[i].getAttribute('id')+"&limit="+ listTags[i].getAttribute('count'));
 				xdr.onload = replaceListNode
 				xdr.send();
 			    

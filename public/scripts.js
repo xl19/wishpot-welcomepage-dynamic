@@ -47,28 +47,29 @@ function parseVenpopML()
   var listTags = document.getElementsByTagName('vp:list');
 	if(null != listTags)
 	{
-		jQuery.ajax({ url:"/list.xsl", dataType: 'xml', success: function(data, textStatus, jqXHR) { _listXsl = data; }});
-	    if ('XDomainRequest' in window && window.XDomainRequest !== null) {
-		//http://graphicmaniacs.com/note/getting-a-cross-domain-json-with-jquery-in-internet-explorer-8-and-later/
-		// override default jQuery transport for IE
-		jQuery.ajaxSettings.xhr = function() {
-		     
-			  var xdr = new XDomainRequest(); 
-			  if (xdr) {
-			      xdr.onerror = function () { alert('err');}; //these callbacks all workaround ie9 bugs
-			      xdr.ontimeout = function () { alert('timeout');  };
-			      xdr.onprogress = function () { alert('progress');};
-			      xdr.onload = function() { alert('done'); };
-			     xdr.timeout = 10000;
-			  }
-			  return xdr;
-		
-		};
-		// also, override the support check
-		jQuery.support.cors = true;
-	    }
+	    jQuery.ajax({ url:"/list.xsl", dataType: 'xml', success: function(data, textStatus, jqXHR) { _listXsl = data; }});
+	    
 		for(var i=0; i<listTags.length;i++)
 		{
+		    if ('XDomainRequest' in window && window.XDomainRequest !== null) {
+			//http://graphicmaniacs.com/note/getting-a-cross-domain-json-with-jquery-in-internet-explorer-8-and-later/
+			// override default jQuery transport for IE
+			
+			    
+			    var xdr = new XDomainRequest(); 
+			   
+				xdr.onerror = function () { alert('err');}; //these callbacks all workaround ie9 bugs
+				xdr.ontimeout = function () { alert('timeout');  };
+				xdr.onprogress = function () { alert('progress');};
+				xdr.onload = function() { alert('done'); };
+				xdr.timeout = 10000;
+				xdr.open("get", "//www.wishpot.com/public/rss/list.aspx?list="+listTags[i].getAttribute('id')+"&limit="+ listTags[i].getAttribute('count'));
+				xdr.onload = replaceListNode
+				xdr.send();
+			    
+		    }
+		    else
+		    {
 			jQuery.ajax({ 
 				url: "//www.wishpot.com/public/rss/list.aspx?list="+listTags[i].getAttribute('id')+"&limit="+ listTags[i].getAttribute('count'),
 				dataType: 'xml',
@@ -83,6 +84,7 @@ function parseVenpopML()
 					handleAjaxError(data, textStatus, jqXHR)
 				}
 			});
+		    }
 	  }
 	}
 }

@@ -58,6 +58,7 @@ function parseVenpopML()
 			      xdr.onerror = function () { alert('err');}; //these callbacks all workaround ie9 bugs
 			      xdr.ontimeout = function () { alert('timeout');  };
 			      xdr.onprogress = function () { alert('progress');};
+			      xdr.onload = function() { alert('done'); };
 			     xdr.timeout = 10000;
 			  }
 			  return xdr;

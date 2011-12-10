@@ -48,6 +48,16 @@ function parseVenpopML()
 	if(null != listTags)
 	{
 		jQuery.ajax({ url:"/list.xsl", dataType: 'xml', success: function(data, textStatus, jqXHR) { _listXsl = data; }});
+	    if ('XDomainRequest' in window && window.XDomainRequest !== null) {
+		//http://graphicmaniacs.com/note/getting-a-cross-domain-json-with-jquery-in-internet-explorer-8-and-later/
+		// override default jQuery transport for IE
+		jQuery.ajaxSettings.xhr = function() {
+		    try { return new XDomainRequest(); }
+		    catch(e) { }
+		};
+		// also, override the support check
+		jQuery.support.cors = true;
+	    }
 		for(var i=0; i<listTags.length;i++)
 		{
 			jQuery.ajax({ 

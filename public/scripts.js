@@ -50,9 +50,11 @@ function parseVenpopML()
 		jQuery.ajax({ url:"/list.xsl", dataType: 'xml', success: function(data, textStatus, jqXHR) { _listXsl = data; }});
 		for(var i=0; i<listTags.length;i++)
 		{
-		    if ('XDomainRequest' in window && window.XDomainRequest !== null) {
+if ('XDomainRequest' in window && window.XDomainRequest !== null) {
 			//http://graphicmaniacs.com/note/getting-a-cross-domain-json-with-jquery-in-internet-explorer-8-and-later/
 			// override default jQuery transport for IE
+			
+			    
 			    var xdr = new XDomainRequest(); 
 			   xdr.contentType = "text/xml";
 				xdr.onerror = function () { console.log('err');}; //these callbacks all workaround ie9 bugs
@@ -94,7 +96,7 @@ function replaceListNode(data, textStatus, jqXHR)
 	// code for IE
 	if (window.ActiveXObject)
 	{
-	  resultDocument=listXml.transformNode(_listXsl);
+	  resultDocument=data.transformNode(_listXsl);
 	  //document.getElementById("example").innerHTML=ex;
 	}
 	// code for Mozilla, Firefox, Opera, etc.

@@ -68,7 +68,7 @@ function parseVenpopML()
 			console.log('about to send...');
 				xdr.send();
 			console.log('sent!');
-			    
+			console.log(xdr);
 		    }
 		    else
 		    {

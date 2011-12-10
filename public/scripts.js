@@ -52,8 +52,14 @@ function parseVenpopML()
 		//http://graphicmaniacs.com/note/getting-a-cross-domain-json-with-jquery-in-internet-explorer-8-and-later/
 		// override default jQuery transport for IE
 		jQuery.ajaxSettings.xhr = function() {
-		    try { var xdr = new XDomainRequest(); 
-			  xdr.onprogress = function() {}; //fix a bug in ie9 that aborts the request if this isn't present
+		    try { 
+			  var xdr = new XDomainRequest(); 
+			  if (xdr) {
+			     xdr.onerror = function () {}; //these callbacks all workaround ie9 bugs
+			     xdr.ontimeout = function () {};
+			     xdr.onprogress = function () {};
+			     xdr.timeout = 10000;
+			  }
 			  return xdr;
 			}
 		    catch(e) { }

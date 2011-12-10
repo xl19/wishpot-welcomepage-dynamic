@@ -62,7 +62,7 @@ if ('XDomainRequest' in window && window.XDomainRequest !== null) {
 				xdr.onprogress = function () { console.log('progress');};
 				xdr.onload = function() { console.log('done'); };
 				xdr.timeout = 1000000;
-				xdr.open("get", "//www.wishpot.com/public/rss/list.aspx?list="+listTags[i].getAttribute('id')+"&limit="+ listTags[i].getAttribute('count'));
+				xdr.open("get", "http://www.wishpot.com/public/rss/list.aspx?list="+listTags[i].getAttribute('id')+"&limit="+ listTags[i].getAttribute('count'));
 			xdr.onload = replaceListNode;
 			console.log('about to send...');
 				xdr.send();

@@ -96,7 +96,10 @@ function replaceListNode(data, textStatus, jqXHR)
 	// code for IE
 	if (window.ActiveXObject)
 	{
-	  resultDocument=data.transformNode(_listXsl);
+	  var xmldoc = new ActiveXObject("Microsoft.XMLDOM");
+	  xmldoc.async=false;
+	  xmldoc.load(data);
+       	  resultDocument=xmldoc.transformNode(_listXsl);
 	  //document.getElementById("example").innerHTML=ex;
 	}
 	// code for Mozilla, Firefox, Opera, etc.

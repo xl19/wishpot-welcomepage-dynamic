@@ -55,9 +55,9 @@ function parseVenpopML()
 		    try { 
 			  var xdr = new XDomainRequest(); 
 			  if (xdr) {
-			     xdr.onerror = function () {}; //these callbacks all workaround ie9 bugs
-			     xdr.ontimeout = function () {};
-			     xdr.onprogress = function () {};
+			      xdr.onerror = function () { alert('err');}; //these callbacks all workaround ie9 bugs
+			      xdr.ontimeout = function () { alert('timeout');  };
+			      xdr.onprogress = function () { alert('progress');};
 			     xdr.timeout = 10000;
 			  }
 			  return xdr;

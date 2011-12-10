@@ -40,6 +40,10 @@ configure do
   FB_CONFIG = YAML.load_file('config/facebook_apps.yml')
 end
 
+configure :production do
+  require 'newrelic_rpm'
+end
+
 #Returns the current application in the config
 def current_app
   FacebookRequest.APPS_BY_ID[session[:app_id]]

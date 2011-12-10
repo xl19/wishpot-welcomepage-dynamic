@@ -64,8 +64,8 @@ function parseVenpopML()
 				url: "//www.wishpot.com/public/rss/list.aspx?list="+listTags[i].getAttribute('id')+"&limit="+ listTags[i].getAttribute('count'),
 				dataType: 'xml',
 				beforeSend: function( xhr ) {
-						listTags[i].innerHTML="<img src=\"/ajax-loader.gif\" />";
-				    xhr.overrideMimeType( 'text/xml' );
+				    listTags[i].innerHTML="<img src=\"/ajax-loader.gif\" />";
+				    try { xhr.overrideMimeType( 'text/xml' ); } catch(e) { /*errors in IE*/ }
 				},
 				context: listTags[i],
 				success: replaceListNode,

@@ -58,16 +58,16 @@ function parseVenpopML()
 			    
 			    var xdr = new XDomainRequest(); 
 			   
-				xdr.onerror = function () { alert('err');}; //these callbacks all workaround ie9 bugs
-				xdr.ontimeout = function () { alert('timeout');  };
-				xdr.onprogress = function () { alert('progress');};
-				xdr.onload = function() { alert('done'); };
-				xdr.timeout = 10000;
+				xdr.onerror = function () { console.log('err');}; //these callbacks all workaround ie9 bugs
+				xdr.ontimeout = function () { console.log('timeout');  };
+				xdr.onprogress = function () { console.log('progress');};
+				xdr.onload = function() { console.log('done'); };
+				xdr.timeout = 1000000;
 				xdr.open("get", "http://www.wishpot.com/public/rss/list.aspx?list="+listTags[i].getAttribute('id')+"&limit="+ listTags[i].getAttribute('count'));
 			xdr.onload = replaceListNode;
-			alert('about to send...');
+			console.log('about to send...');
 				xdr.send();
-			alert('sent!');
+			console.log('sent!');
 			    
 		    }
 		    else

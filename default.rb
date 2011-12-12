@@ -4,6 +4,7 @@ require 'haml'
 require 'lib/helper'
 require 'data_mapper'
 require 'open-uri'
+require 'json'
 
 enable :sessions
 disable :protection #facebook requests fail this
@@ -91,6 +92,25 @@ get '/' do
 	page = WelcomePage.get(@page_id)
   @content = (page.nil?) ? '' : page.text
 	haml :index
+end
+
+post '/image_upload' do
+  @transloadit_api = '4cca35726f4c4cf593da639972ec3211'
+  @transloadit_template = '8173f3a685e846be97b1714ea370caec'
+  resp = params[:transloadit]
+  #p @resp
+  result = JSON.parse(resp)
+  #p result
+  @img_url = result['results'].first[1].first['url']
+  @img_w = result['results'].first[1].first['meta']['width']
+  @img_h = result['results'].first[1].first['meta']['height']
+  haml :image_upload
+end
+
+get '/image_upload' do
+  @transloadit_api = '4cca35726f4c4cf593da639972ec3211'
+  @transloadit_template = '8173f3a685e846be97b1714ea370caec'
+  haml :image_upload
 end
 
 get '/admin' do

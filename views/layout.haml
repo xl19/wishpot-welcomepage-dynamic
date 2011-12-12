@@ -6,6 +6,7 @@
     %script{:type=>'text/javascript', :src=>'//www.google.com/jsapi?key=ABQIAAAAJGyvUfsdpH6X7cJmljZWzxR11mSib7gv-rFwxoFlYwqwfyHHWRQL47mbtaJBqREUwz5NDmywjO0lCg'}
     %script{:type=>'text/javascript', :src=>'//www.wishpot.com/scripts/wishpot.js'}
     :javascript
+      google.load("jquery", "1.4.2", {uncompressed:false});
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-1169481-15']);
       _gaq.push(['_trackPageview']);
@@ -21,7 +22,6 @@
     = yield
     %div#fb-root
     :javascript
-      google.load("jquery", "1.4.2", {uncompressed:false});
       var VP = {
         PageId : '#{@page_id}',
         AppId : '#{@app_id}'
@@ -51,4 +51,5 @@
       }());
     %script{:type=>'text/javascript', :src=>'//www.wishpot.com/scripts/wishpot_bottom.js'}
     %script{:type=>'text/javascript', :src=>'/scripts.js'}
+    
     

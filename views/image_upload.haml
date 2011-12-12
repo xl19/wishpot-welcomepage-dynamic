@@ -1,0 +1,18 @@
+%form{:action=>'http://api2.transloadit.com/assemblies', :enctype=>'multipart/form-data', :method=>'POST', :id=>"tl_form"}
+  %input{:type=>'hidden', :name=>'params', :value=>"{\"auth\":{\"key\":\"#{@transloadit_api}\"},\"template_id\":\"#{@transloadit_template}\",\"redirect_url\":\"http://#{request.host_with_port}/image_upload\"}"}
+  %input{:type=>'file', :name=>'my_file'}
+  %input{:type=>'submit', :name=>'Upload', :value=>'Upload'}
+-if @img_url
+  %br
+  %h2 Uploaded Image: #{@img_h}h x #{@img_w}w
+  %code=@img_url
+  %br
+  %br
+  %img{:src=>@img_url}
+%script{:src=>'//assets.transloadit.com/js/jquery.transloadit2.js', :type=>'text/javascript'}
+:javascript
+  WPJS.RunOnDomReady(function() { 
+    $('#tl_form').transloadit({
+        wait: true
+     });
+  });

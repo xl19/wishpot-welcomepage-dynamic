@@ -12,7 +12,7 @@ function appendDetailsToForm(session)
 
 function trace(msg)
 {
-	if(console) { console.log(msg); }
+	//if(console) { console.log(msg); }
 }
 
 /***************************************/

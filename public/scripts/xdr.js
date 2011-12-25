@@ -13,7 +13,7 @@ if ( window.XDomainRequest ) {
 			return {
 				send: function( _, complete ) {
 					function callback( status, statusText, responses, responseHeaders ) {
-						xdr.onload = xdr.onerror = xdr.ontimeout = jQuery.noop;
+						xdr.onload = xdr.onerror = xdr.ontimeout = xdr.onprogress = jQuery.noop;
 						xdr = undefined;
 						complete( status, statusText, responses, responseHeaders );
 					}

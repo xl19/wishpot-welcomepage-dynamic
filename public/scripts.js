@@ -10,6 +10,11 @@ function appendDetailsToForm(session)
 	}
 }
 
+function trace(msg)
+{
+	//console.log(msg);
+}
+
 /***************************************/
 /* Venpop markup parsing and replacing */
 /***************************************/
@@ -19,6 +24,13 @@ function replaceTags(tagCollection, replacementNode)
   {
 		replaceTag(replacementNode, tagCollection[i]);
   }
+}
+
+function findTag(venpopTagName)
+{
+	var goodTags = document.getElementsByTagName('vp:'+venpopTagName);
+	if(goodTags.length > 0) return goodTags;
+	return document.getElementsByTagName(venpopTagName);
 }
 
 function replaceTag(replacementNode, tag)
@@ -31,8 +43,8 @@ var _listXsl = null;
 
 function parseVenpopML()
 {
-	//console.log("Parsing Venpop Markup");
-   var tags = document.getElementsByTagName('vp:pagename');
+	 trace("Parsing Venpop Markup");
+   var tags = findTag('pagename');
    if(null != tags && tags.length > 0 && VP.PageId != null)
    {
 			requireFacebookInit(function(){
@@ -43,34 +55,15 @@ function parseVenpopML()
 			});
    }
   
-  //lists
-  var listTags = document.getElementsByTagName('vp:list');
+  //lists - strip namespace for ie
+  var listTags = findTag('list');
 	if(null != listTags)
 	{
+		trace("Found "+listTags.length+" list tags");
 		jQuery.ajax({ url:"/list.xsl", dataType: 'xml', success: function(data, textStatus, jqXHR) { _listXsl = data; }});
+		
 		for(var i=0; i<listTags.length;i++)
 		{
-if ('XDomainRequest' in window && window.XDomainRequest !== null) {
-			//http://graphicmaniacs.com/note/getting-a-cross-domain-json-with-jquery-in-internet-explorer-8-and-later/
-			// override default jQuery transport for IE
-			
-			    
-			    var xdr = new XDomainRequest(); 
-			   xdr.contentType = "text/xml";
-				xdr.onerror = function () { console.log('err');}; //these callbacks all workaround ie9 bugs
-				xdr.ontimeout = function () { console.log('timeout');  };
-				xdr.onprogress = function () { console.log('progress');};
-				xdr.onload = function() { console.log('done'); };
-				xdr.timeout = 1000000;
-				xdr.open("get", "http://www.wishpot.com/public/rss/list.aspx?list="+listTags[i].getAttribute('id')+"&limit="+ listTags[i].getAttribute('count'));
-			xdr.onload = replaceListNode;
-			console.log('about to send...');
-				xdr.send();
-			console.log('sent!');
-			console.log(xdr);
-		    }
-		    else
-		    {
 			jQuery.ajax({ 
 				url: "//www.wishpot.com/public/rss/list.aspx?list="+listTags[i].getAttribute('id')+"&limit="+ listTags[i].getAttribute('count'),
 				dataType: 'xml',
@@ -85,9 +78,8 @@ if ('XDomainRequest' in window && window.XDomainRequest !== null) {
 					handleAjaxError(data, textStatus, jqXHR)
 				}
 			});
-		    }
 	  }
-	}
+	}else{trace("Found no list tags");}
 }
 
 function replaceListNode(data, textStatus, jqXHR)
@@ -96,11 +88,14 @@ function replaceListNode(data, textStatus, jqXHR)
 	// code for IE
 	if (window.ActiveXObject)
 	{
+		trace("Creating XML ActiveXObject...")
 	  var xmldoc = new ActiveXObject("Microsoft.XMLDOM");
 	  xmldoc.async=false;
 	  xmldoc.load(data);
-       	  resultDocument=xmldoc.transformNode(_listXsl);
-	  //document.getElementById("example").innerHTML=ex;
+		trace("Transforming with: "+_listXsl);
+    resultDocument=xmldoc.transformNode(_listXsl);
+		trace(typeof(resultDocument));
+	  //document.getElementById("example").innerHTML=resultDocument;
 	}
 	// code for Mozilla, Firefox, Opera, etc.
 	else if (document.implementation && document.implementation.createDocument)
@@ -116,8 +111,8 @@ function replaceListNode(data, textStatus, jqXHR)
 
 function handleAjaxError(data, textStatus, jqXHR)
 {
-	console.log("error from xhr: "+textStatus);
-	console.log(data);
+	trace("error from xhr: "+textStatus);
+	trace(data);
 }
 
 //Wrap any call that requires facebook to be init'ed in this function

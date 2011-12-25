@@ -45,9 +45,26 @@ configure :production do
   require 'newrelic_rpm'
 end
 
-#Returns the current application in the config
-def current_app
-  FacebookRequest.APPS_BY_ID[session[:app_id]]
+
+helpers do
+  #Returns the current application in the config
+  def current_app
+    FacebookRequest.APPS_BY_ID[session[:app_id]]
+  end
+  
+  #The session token is scoped to the app and page to make sure that sessions can't 
+  #leak across those boundaries.  All app/page combos should feel distinct
+  def session_access_token
+   #p "GETTING: #{@app_id}_#{@page_id}"
+   session["access_token_#{@app_id}_#{@page_id}"]
+  end
+
+  # Wanted this to look like a property (session_access_token=) but that didn't work
+  # http://stackoverflow.com/questions/8619792/sinatra-helper-with-setter
+  def set_session_access_token(v)
+    #p "Setting: #{@app_id}_#{@page_id} access token to: #{v}"
+    session["access_token_#{@app_id}_#{@page_id}"] = v
+  end
 end
 
 before do
@@ -82,6 +99,11 @@ before do
 	 end
 end
 
+after do
+  #make sure we can set cookies in facebook in IE
+  response.headers['P3P'] = 'CP="IDC DSP COR CURa ADMa OUR IND PHY ONL COM STA"'
+end
+
 post '/' do
 	page = WelcomePage.get(@page_id) 
 	@content = (page.nil?) ? '' : page.text
@@ -114,9 +136,11 @@ get '/image_upload' do
 end
 
 get '/admin' do
+  #p "ADMIN SEES ACCESS TOKEN: #{session_access_token}"
 	#make sure we have the admin's email address
-	if session['access_token'].nil?
-		redirect "https://www.facebook.com/dialog/oauth?client_id=#{@app_id}&redirect_uri=#{URI.escape(request.url.gsub(request.path, ''))}/post-oauth&scope=email" 
+	if session_access_token.nil?
+	  raise 'App id not set before redirection!' if @app_id.blank?
+		redirect "https://www.facebook.com/dialog/oauth?client_id=#{@app_id}&scope=email&redirect_uri=#{URI.escape(request.url.gsub(request.path, ''))}/post-oauth" 
 	end
 	
 	return "Sorry, your session may have timed out.  Please go back to your fan page, and click 'edit' again" if @page_id.nil?
@@ -185,7 +209,7 @@ get '/download_emails' do
 end
 
 get '/admin_download_emails' do
-	if FacebookRequest.user_is_app_admin(session['access_token'])
+	if FacebookRequest.user_is_app_admin(session_access_token)
 		content_type 'text/csv', :charset => 'utf-8'
 		return "Email Address, Facebook Id, Facebook Page, Created At\n" + WelcomePage.all( :order=>[:created_at.asc]).collect{|e| "#{e.admin_email},#{e.admin_id},#{e.page_id},#{e.created_at}\n"}.to_s
 	end
@@ -194,8 +218,9 @@ end
 
 get '/post-oauth' do
 	begin
-		session['access_token'] = FacebookRequest.get_access_token(@app_id, @secret_key, params[:code], URI.escape(request.url.gsub(request.path, '').gsub('?'+request.query_string, ''))+"/post-oauth")
-		me = FacebookRequest.get_user(session['access_token'])
+	  #p "going to request access token for app #{@app_id} on page #{@page_id} with the returned code: #{params[:code]}"
+		set_session_access_token FacebookRequest.get_access_token(@app_id, @secret_key, params[:code], URI.escape(request.url.gsub(request.path, '').gsub('?'+request.query_string, ''))+"/post-oauth")
+		me = FacebookRequest.get_user(session_access_token)
 		pg = WelcomePage.first_or_create({:page_id=>@page_id.to_s})
 		pg.attributes = {:admin_id => me['id'], :admin_email=>me['email']}
 		pg.save

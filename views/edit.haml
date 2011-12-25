@@ -11,7 +11,7 @@
 %span.wishpot_status=@status_msg
 %form{:action=>'/admin', :method=>'post', :style=>'margin-top: 1em;'}
   %div#page_editor
-    %textarea{:style=>'width:510px; height:500px;', :name=>'content'}=@content
+    %textarea{:style=>'width:510px; height:600px;', :name=>'content'}=@content
     %div{:width=>'510px'}
       %a{:href=>"http://facebook.com/pages/anything/#{@page_id}?sk=app_#{@app_id}", :target=>'wishpot_preview'} See Page
       %input{:type=>'submit', :value=>'Save', :align=>'right'}

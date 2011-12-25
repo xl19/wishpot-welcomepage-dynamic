@@ -55,8 +55,17 @@ class FacebookRequest
     return open(token_url).string
   end
   
+  #This is where we store a hash of calls to the facebook api for /me indexed by access token
+  @@me = Hash.new
+  
   def self.get_user(access_token_param)
-    return JSON.parse open("https://graph.facebook.com/me?#{URI.escape(access_token_param)}").string
+    u = "https://graph.facebook.com/me?#{URI.escape(access_token_param)}"
+    begin
+      @@me[access_token_param] ||= open(u).string
+    rescue OpenURI::HTTPError
+      p "Error opening: #{u} \n #{$!}"
+    end
+    return @@me[access_token_param].nil? ? nil : JSON.parse(@@me[access_token_param])
   end
   
   def self.get_fql(q)

@@ -40,8 +40,9 @@ class FacebookRequest
   end
   
   #Currently this is just a hard-coded list of facebook ids
-  def self.user_is_app_admin(access_token_param)
+  def self.user_is_app_admin(access_token_param, app_id)
     u = self.get_user(access_token_param)
+    #is_admin = self.get_fql("SELECT developer_id FROM developer WHERE application_id='#{app_id}' AND developer_id='#{u['id']}'")
     ['4810243'].include?(u['id'])
   end
   
@@ -55,7 +56,12 @@ class FacebookRequest
   end
   
   def self.get_user(access_token_param)
-  	return JSON.parse open("https://graph.facebook.com/me?#{URI.escape(access_token_param)}").string
+    return JSON.parse open("https://graph.facebook.com/me?#{URI.escape(access_token_param)}").string
+  end
+  
+  def self.get_fql(q)
+    #p "Running query: https://graph.facebook.com/fql?q=#{URI.escape(q)}"
+    return JSON.parse open("https://graph.facebook.com/fql?q=#{URI.escape(q)}").string
   end
   
   

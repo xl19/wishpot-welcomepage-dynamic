@@ -135,12 +135,17 @@ get '/image_upload' do
   haml :image_upload
 end
 
+#Redirects the user to auth.  Call this on expired sessions, or non-existent sessions.
+get '/doauth' do
+  raise 'App id not set before redirection!' if @app_id.nil?
+	redirect "https://www.facebook.com/dialog/oauth?client_id=#{@app_id}&scope=email&redirect_uri=#{URI.escape(request.url.gsub(request.path, ''))}/post-oauth"
+end
+
 get '/admin' do
   #p "ADMIN SEES ACCESS TOKEN: #{session_access_token}"
 	#make sure we have the admin's email address
 	if session_access_token.nil?
-	  raise 'App id not set before redirection!' if @app_id.blank?
-		redirect "https://www.facebook.com/dialog/oauth?client_id=#{@app_id}&scope=email&redirect_uri=#{URI.escape(request.url.gsub(request.path, ''))}/post-oauth" 
+	  redirect '/doauth'
 	end
 	
 	return "Sorry, your session may have timed out.  Please go back to your fan page, and click 'edit' again" if @page_id.nil?
@@ -209,11 +214,11 @@ get '/download_emails' do
 end
 
 get '/admin_download_emails' do
-	if FacebookRequest.user_is_app_admin(session_access_token)
+	if FacebookRequest.user_is_app_admin(session_access_token, @app_id)
 		content_type 'text/csv', :charset => 'utf-8'
 		return "Email Address, Facebook Id, Facebook Page, Created At\n" + WelcomePage.all( :order=>[:created_at.asc]).collect{|e| "#{e.admin_email},#{e.admin_id},#{e.page_id},#{e.created_at}\n"}.to_s
 	end
-	'error, try signing in again.'
+	"Error, try signing in again, or ensure you're an admin for app #{@app_id}"
 end
 
 get '/post-oauth' do

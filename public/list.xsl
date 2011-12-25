@@ -20,7 +20,7 @@
 						<xsl:attribute name="target">_top</xsl:attribute>
 						<img>
 							<xsl:attribute name="src">
-    						<xsl:value-of select="wp:SmallImage/wp:url" />
+    						<xsl:value-of select="substring(wp:SmallImage/wp:url, 6)" />
   						</xsl:attribute>
   						<xsl:attribute name="alt">
     						<xsl:value-of select="title" />

@@ -25,6 +25,9 @@ if ( window.XDomainRequest ) {
 					xdr.onerror = function() {
 						callback( 404, "Not Found" );
 					};
+					xdr.onprogress = function() {
+						if(console) { console.log("IE Progress");	}
+					};
 					if ( s.xdrTimeout ) {
 						xdr.ontimeout = function() {
 							callback( 0, "timeout" );

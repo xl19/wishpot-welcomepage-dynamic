@@ -92,7 +92,8 @@ function replaceListNode(data, textStatus, jqXHR)
 	  var xmldoc = new ActiveXObject("Microsoft.XMLDOM");
 	  xmldoc.async=false;
 	  xmldoc.load(data);
-		trace("Transforming with: "+_listXsl);
+		trace("Transforming with xsl: ")
+		trace(_listXsl);
     resultDocument=xmldoc.transformNode(_listXsl);
 		trace(typeof(resultDocument));
 	  //document.getElementById("example").innerHTML=resultDocument;

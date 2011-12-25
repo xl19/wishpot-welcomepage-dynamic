@@ -25,7 +25,12 @@ if ( window.XDomainRequest ) {
 					xdr.onerror = function() {
 						callback( 404, "Not Found" );
 					};
-					xdr.onprogress = jQuery.noop;
+					xdr.onprogress = function() {
+						if(console) { console.log("IE Progress");	}
+					};
+					xdr.onsuccess = function() {
+						if(console) { console.log("IE Success!");	}
+					};
 					if ( s.xdrTimeout ) {
 						xdr.ontimeout = function() {
 							callback( 0, "timeout" );

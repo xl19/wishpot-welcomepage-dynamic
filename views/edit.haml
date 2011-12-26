@@ -81,7 +81,10 @@
     content_css : "/styles.css", 
     style_formats : [
       {title : 'Fans Only', inline : 'span', classes : 'is-fb-fan'},
-      {title : 'Non-Fans Only', inline : 'span', classes : 'not-fb-fan'}
+      {title : 'Non-Fans Only', inline : 'span', classes : 'not-fb-fan'},
+      {title : 'Have given email', inline : 'span', classes : 'given-email'},
+      {title : 'Have not given email', inline : 'span', classes : 'not-given-email'},
+      {title : 'Has just given email', inline : 'span', classes : 'just-given-email'}
     ],
     extended_valid_elements : "fb:like[href|send|width|show_faces|font],vp:list[id|count]",
     setup : function(ed) {

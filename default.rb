@@ -96,6 +96,7 @@ before do
 
 	 if(request.cookies["venpop_email_#{@page_id}"])
 	 		@given_email = true
+	 		@just_given_email = (request['referrer'] == 'email')
 	 end
 end
 
@@ -202,7 +203,7 @@ post '/email' do
 		end
 	end
 	response.set_cookie("venpop_email_#{@page_id}", { :expires => Time.now+365*24*60*60 } )
-  redirect '/'	
+  redirect '/?referrer=email'	
 end
 
 get '/download_emails' do

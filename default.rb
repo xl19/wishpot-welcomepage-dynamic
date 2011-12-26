@@ -7,6 +7,11 @@ require 'open-uri'
 require 'json'
 require 'pony' #for sending mail for leads
 
+unless development?
+  require 'exceptional'
+  use Rack::Exceptional, 'b4b310a81cc2b96c94d12c5a9077ab5c65cd8225'
+end
+
 enable :sessions
 disable :protection #facebook requests fail this
 set :haml, :format => :html5, :layout=>:layout

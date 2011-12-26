@@ -1,0 +1,12 @@
+A new user just started using the welcome page app!
+
+Their e-mail address is: #{@email}
+
+The page they're working on is here: 
+http://facebook.com/pages/anything/#{@page_id}?sk=app_#{@app_id}
+
+The Venpop app they're using is:
+https://developers.facebook.com/apps?app_id=#{@app_id}
+
+More details:
+#{JSON.pretty_generate(@me)}

@@ -5,6 +5,7 @@ require 'lib/helper'
 require 'data_mapper'
 require 'open-uri'
 require 'json'
+require 'pony' #for sending mail for leads
 
 enable :sessions
 disable :protection #facebook requests fail this
@@ -148,7 +149,7 @@ get '/admin' do
 	if session_access_token.nil?
 	  redirect '/doauth'
 	end
-	
+  
 	return "Sorry, your session may have timed out.  Please go back to your fan page, and click 'edit' again" if @page_id.nil?
 	
 	page = WelcomePage.get(@page_id)
@@ -226,10 +227,21 @@ get '/post-oauth' do
 	begin
 	  #p "going to request access token for app #{@app_id} on page #{@page_id} with the returned code: #{params[:code]}"
 		set_session_access_token FacebookRequest.get_access_token(@app_id, @secret_key, params[:code], URI.escape(request.url.gsub(request.path, '').gsub('?'+request.query_string, ''))+"/post-oauth")
-		me = FacebookRequest.get_user(session_access_token)
-		pg = WelcomePage.first_or_create({:page_id=>@page_id.to_s})
-		pg.attributes = {:admin_id => me['id'], :admin_email=>me['email']}
+		@me = FacebookRequest.get_user(session_access_token)
+		pg = WelcomePage.first_or_create({:page_id=>@page_id.to_s}, {:app_id=>@app_id})
+		
+		is_new = pg.admin_id.nil? #keep track of whether or not this is a new welcome page, for CRM
+		
+		pg.attributes = {:admin_id => @me['id'], :admin_email=>@me['email']}
 		pg.save
+		
+		if is_new
+		  @email = @me['email']
+  		@full_name = @me['first_name'] +' ' + @me['last_name']
+  		Pony.mail(:to => 'sales@wishpot.com', :cc=>'tom@venpop.com', :from => 'ops@venpop.com', :subject => "[Lead] New Welcome Page App User: #{@full_name}", :body=>haml(:email_new_admin, :layout=>false))
+  		#Pony.mail(:to => 'tom@lianza.org', :from => 'ops@venpop.com', :subject => "[Lead] New Welcome Page App User: #{@full_name}", :body=>haml(:email_new_admin, :layout=>false))
+  	end
+  	
 		redirect '/admin'
 	rescue
 		#p token_url

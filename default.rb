@@ -44,6 +44,8 @@ end
 
 configure :production do
   require 'newrelic_rpm'
+  require 'exceptional'
+  use Rack::Exceptional, ' b4b310a81cc2b96c94d12c5a9077ab5c65cd8225'
 end
 
 

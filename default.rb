@@ -9,6 +9,7 @@ require 'pony' #for sending mail for leads
 
 enable :sessions
 disable :protection #facebook requests fail this
+set :raise_errors, true #allow exceptional to catch our exceptions
 set :haml, :format => :html5, :layout=>:layout
 
 class WelcomePage

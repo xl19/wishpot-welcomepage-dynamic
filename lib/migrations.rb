@@ -15,12 +15,12 @@ migration 1, :allow_multiple_tabs do
     execute "ALTER TABLE collected_emails ADD COLUMN welcome_page_app_id VARCHAR(50) NULL"
     
     #This update relies on the fact that page_id used to be the primary key, therefore there is only one result returned in the subquery
-    execute "UPDATE collected_emails SET welcome_page_app_id=(SELECT app_id from welcome_pages WHERE welcome_pages.page_id=collected_emails.page_id)"
+    execute "UPDATE collected_emails SET welcome_page_app_id=(SELECT app_id from welcome_pages WHERE welcome_pages.page_id=collected_emails.welcome_page_page_id)"
     
     execute "ALTER TABLE welcome_pages DROP CONSTRAINT welcome_pages_pkey; ALTER TABLE welcome_pages ADD PRIMARY KEY (page_id, app_id);"
     
     #now, we can safely define the table as non-nullable
-    execute "ALTER TABLE collected_emails COLUMN welcome_page_app_id VARCHAR(50) NOT NULL"
+    execute "ALTER TABLE collected_emails ALTER COLUMN welcome_page_app_id SET NOT NULL"
   end
 
   down do

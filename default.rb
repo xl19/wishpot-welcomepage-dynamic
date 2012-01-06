@@ -15,7 +15,7 @@ set :haml, :format => :html5, :layout=>:layout
 class WelcomePage
   include DataMapper::Resource
   property :page_id, String, :key=>true
-  property :app_id, String
+  property :app_id, String, :key=>true
   property :text, Text
   property :admin_id, String
   property :admin_email, String
@@ -37,9 +37,14 @@ configure do
   # DATABASE_URL is a complete URL for the Postgres database that Heroku
   # provides for you, something like: postgres://user:password@host/db, which
   # is what DM wants. This is also a convenient check wether we're in production
-  # / not.
-  DataMapper.setup(:default, (ENV["DATABASE_URL"] || "sqlite3:///#{Dir.pwd}/db/development.sqlite3"))
+  # / not. "sqlite3:///#{Dir.pwd}/db/development.sqlite3"
+  DataMapper.setup(:default, (ENV["DATABASE_URL"] || "postgres://localhost/welcomepage_production" ))
+  DataMapper.finalize
+  
+  #Uncomment this anytime you want to run the migrations.  It's safe to re-run them.
+  require 'lib/migrations'
   DataMapper.auto_upgrade!
+  
   FB_CONFIG = YAML.load_file('config/facebook_apps.yml')
 end
 
@@ -68,6 +73,11 @@ helpers do
   def set_session_access_token(v)
     #p "Setting: #{@app_id}_#{@page_id} access token to: #{v}"
     session["access_token_#{@app_id}_#{@page_id}"] = v
+  end
+  
+  def get_content_for_welcome_page
+    page = WelcomePage.get(@page_id, @app_id)
+    @content = (page.nil?) ? '' : page.text
   end
 end
 
@@ -110,14 +120,12 @@ after do
 end
 
 post '/' do
-	page = WelcomePage.get(@page_id) 
-	@content = (page.nil?) ? '' : page.text
+	get_content_for_welcome_page
   haml :index
 end
 
 get '/' do
-	page = WelcomePage.get(@page_id)
-  @content = (page.nil?) ? '' : page.text
+	get_content_for_welcome_page
 	haml :index
 end
 
@@ -158,7 +166,7 @@ get '/admin' do
   
 	return "Sorry, your session may have timed out.  Please go back to your fan page, and click 'edit' again" if @page_id.nil?
 	
-	page = WelcomePage.get(@page_id)
+	page = WelcomePage.get(@page_id, @app_id)
 	@email_count = 0
   if !page.nil?
 		@content = page.text
@@ -173,10 +181,9 @@ get '/admin' do
 end
 
 post '/admin' do
-	pg = WelcomePage.first_or_create({:page_id=>@page_id.to_s}, {:text => params['content']})
+  return "Sorry, your session may have timed out.  Please go back to your fan page, and click 'edit' again" if @page_id.nil? || @app_id.nil?
+  pg = WelcomePage.first_or_create({:page_id=>@page_id.to_s, :app_id=>@app_id.to_s}, {:text => params['content']})
 	pg.attributes = {:text => params['content']}
-	# start back-filling old pages with their app id's
-	pg.attributes = {:app_id => @app_id} if pg.app_id.nil?
  	unless pg.save
 		@err_msg = "Error: "
 		pg.errors.each do |e|
@@ -193,7 +200,7 @@ end
 # This is the target for a user submitting an email address to the system
 post '/email' do
 	unless @page_id.nil?
-		pg = WelcomePage.get(@page_id)
+		pg = WelcomePage.get(@page_id, @app_id)
 		ce = CollectedEmail.first_or_create(:welcome_page=>pg, :email_address=>(params[:email] || params[:email_address]) )
 		ce.user_id = params[:uid] if(params[:uid])
 		details = Array.new

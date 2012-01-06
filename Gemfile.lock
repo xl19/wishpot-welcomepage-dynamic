@@ -90,6 +90,7 @@ PLATFORMS
 DEPENDENCIES
   activesupport
   data_mapper
+  dm-migrations
   dm-postgres-adapter
   exceptional
   haml

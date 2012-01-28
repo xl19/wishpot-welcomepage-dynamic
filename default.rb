@@ -26,7 +26,7 @@ end
 class CollectedEmail
 	include DataMapper::Resource
 	property :user_id, String
-	property :email_address, String, :key=>true
+	property :email_address, String
   property :created_at, DateTime, :default=>DateTime.now.new_offset(0)	
 	property :details, Text
 	belongs_to :welcome_page, :key=>true
@@ -38,7 +38,7 @@ configure do
   # provides for you, something like: postgres://user:password@host/db, which
   # is what DM wants. This is also a convenient check wether we're in production
   # / not. "sqlite3:///#{Dir.pwd}/db/development.sqlite3"
-  DataMapper.setup(:default, (ENV["DATABASE_URL"] || "postgres://localhost/welcomepage_production" ))
+  DataMapper.setup(:default, (ENV["DATABASE_URL"] || "postgres://localhost/welcomepage_development" ))
   DataMapper.finalize
   
   #Uncomment this anytime you want to run the migrations.  It's safe to re-run them.
@@ -79,6 +79,10 @@ helpers do
     page = WelcomePage.get(@page_id, @app_id)
     @content = (page.nil?) ? '' : page.text
   end
+  
+  def given_email_cookie_name
+    "venpop_email_#{@app_id}_#{@page_id}"
+  end
 end
 
 before do
@@ -108,7 +112,7 @@ before do
    @app_id = session[:app_id]
    @secret_key = session[:secret_key]
 
-	 if(request.cookies["venpop_email_#{@page_id}"])
+	 if(request.cookies[given_email_cookie_name])
 	 		@given_email = true
 	 		@just_given_email = (request['referrer'] == 'email')
 	 end
@@ -216,7 +220,7 @@ post '/email' do
 			haml :index
 		end
 	end
-	response.set_cookie("venpop_email_#{@page_id}", { :expires => Time.now+365*24*60*60 } )
+	response.set_cookie(given_email_cookie_name, { :expires => Time.now+365*24*60*60 } )
   redirect '/?referrer=email'	
 end
 

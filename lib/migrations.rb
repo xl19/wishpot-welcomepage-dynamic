@@ -30,6 +30,20 @@ migration 1, :allow_multiple_tabs do
   end
 end
 
+migration 2, :allow_email_per_tab do
+  up do
+    execute 'ALTER TABLE collected_emails DROP CONSTRAINT collected_emails_pkey;'
+    execute 'DROP INDEX unique_collected_emails_key;'
+    execute 'ALTER TABLE collected_emails ADD CONSTRAINT collected_emails_pkey PRIMARY KEY(email_address , welcome_page_page_id, welcome_page_app_id);'
+  end
+  
+  down do
+    execute 'ALTER TABLE collected_emails DROP CONSTRAINT collected_emails_pkey;'
+    execute 'ALTER TABLE collected_emails ADD CONSTRAINT collected_emails_pkey PRIMARY KEY(email_address , welcome_page_page_id );'
+    execute 'CREATE UNIQUE INDEX unique_collected_emails_key ON collected_emails USING btree (email_address COLLATE pg_catalog."default" );'
+  end
+end
+
 migrate_up!
 DataMapper.logger.debug( "Finished Migration" )
 

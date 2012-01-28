@@ -5,7 +5,7 @@ require 'lib/helper'
 require 'data_mapper'
 require 'open-uri'
 require 'json'
-require 'pony' #for sending mail for leads
+require 'aws/ses' #for sending mail for leads
 
 enable :sessions
 disable :protection #facebook requests fail this
@@ -255,7 +255,22 @@ get '/post-oauth' do
 		if is_new
 		  @email = @me['email']
   		@full_name = @me['first_name'] +' ' + @me['last_name']
-  		Pony.mail(:to => 'sales@wishpot.com', :cc=>'tom@venpop.com', :from => 'ops@venpop.com', :subject => "[Lead] New Welcome Page App User: #{@full_name}", :body=>haml(:email_new_admin, :layout=>false))
+  		
+  		ses = AWS::SES::Base.new(
+        :access_key_id     => 'AKIAIJRTFQDNNSDA233A', 
+        :secret_access_key => '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'
+      )
+      
+      #if we were using smtp, would be:
+      #u: AKIAJT2WUBQJS37Z26KA
+      #p: AgdMygbYNEX1k5IGpscvRlcq66xomMu4NJE6M2bBqrJR
+      
+      ses.send_email :to      => ['bizdev@wishpot.com', 'ops@wishpot.com'],
+                   :source    => '"Welcomepage Lead" <support@venpop.com>',
+                   :subject   => "[Lead] New Welcome Page App User: #{@full_name} (#{@email})",
+                   :text_body => haml(:email_new_admin, :layout=>false)
+      
+  		#Pony.mail(:to => 'sales@wishpot.com', :cc=>'tom@venpop.com', :from => 'ops@venpop.com', :subject => "[Lead] New Welcome Page App User: #{@full_name}", :body=>haml(:email_new_admin, :layout=>false))
   		#Pony.mail(:to => 'tom@lianza.org', :from => 'ops@venpop.com', :subject => "[Lead] New Welcome Page App User: #{@full_name}", :body=>haml(:email_new_admin, :layout=>false))
   	end
   	

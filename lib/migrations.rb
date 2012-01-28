@@ -32,8 +32,9 @@ end
 
 migration 2, :allow_email_per_tab do
   up do
-    execute 'ALTER TABLE collected_emails DROP CONSTRAINT collected_emails_pkey;'
-    execute 'DROP INDEX unique_collected_emails_key;'
+    #was in dev, but never in production
+    #execute 'ALTER TABLE collected_emails DROP CONSTRAINT collected_emails_pkey;'
+    #execute 'DROP INDEX unique_collected_emails_key;'
     execute 'ALTER TABLE collected_emails ADD CONSTRAINT collected_emails_pkey PRIMARY KEY(email_address , welcome_page_page_id, welcome_page_app_id);'
   end
   

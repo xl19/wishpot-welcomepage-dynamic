@@ -54,6 +54,10 @@ configure :production do
   use Rack::Exceptional, ' b4b310a81cc2b96c94d12c5a9077ab5c65cd8225'
 end
 
+configure :development do
+  DataMapper::Logger.new(STDOUT, :debug)
+end
+
 
 helpers do
   #Returns the current application in the config
@@ -227,7 +231,7 @@ end
 get '/download_emails' do
 	if @admin and !@page_id.nil?
 		content_type 'text/csv', :charset => 'utf-8'
-		return "Email Address, Created Time, Details\n" + CollectedEmail.all(:welcome_page_page_id=>@page_id, :welcome_page_app_id=>@app_id, :order=>[:created_at.asc]).collect{|e| "#{e.email_address},#{e.created_at},\"#{e.details}\"\n"}.to_s
+		return "Email Address, Created Time, Details\n" + CollectedEmail.all(:conditions =>{:welcome_page_page_id=>@page_id, :welcome_page_app_id=>@app_id}, :fields=>[:email_address, :created_at, :details], :order=>[:created_at.asc]).collect{|e| "#{e.email_address},#{e.created_at},\"#{e.details}\"\n"}.to_s
 	end
 	'error, try signing in again.'
 end

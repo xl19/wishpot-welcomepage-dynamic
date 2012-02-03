@@ -269,7 +269,7 @@ get '/post-oauth' do
       #u: AKIAJT2WUBQJS37Z26KA
       #p: AgdMygbYNEX1k5IGpscvRlcq66xomMu4NJE6M2bBqrJR
       
-      ses.send_email :to      => ['269.33701@dropbox.pipedrive.com', 'ops@wishpot.com'],
+      ses.send_email :to      => ['support@venpop.com', 'ops@wishpot.com'],
                    :source    => '"Welcomepage Lead" <support@venpop.com>',
                    :subject   => "[Lead] New Welcome Page App User: #{@full_name} (#{@email})",
                    :text_body => haml(:email_new_admin, :layout=>false)

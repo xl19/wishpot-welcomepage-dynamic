@@ -36,24 +36,24 @@ function findTag(venpopTagName)
 function replaceTag(replacementNode, tag)
 {
 	tag.parentNode.insertBefore(replacementNode, tag);
-  tag.parentNode.removeChild(tag);
+	tag.parentNode.removeChild(tag);
 }
 
 var _listXsl = null;
 
 function parseVenpopML()
 {
-	 trace("Parsing Venpop Markup");
-   var tags = findTag('pagename');
-   if(null != tags && tags.length > 0 && VP.PageId != null)
-   {
-			requireFacebookInit(function(){
+	trace("Parsing Venpop Markup");
+  var tags = findTag('pagename');
+  if(null != tags && tags.length > 0 && VP.PageId != null)
+  {
+		requireFacebookInit(function(){
       	FB.api('/'+VP.PageId, function(response) {
 	        if(response != undefined)
 	          replaceTags(tags, document.createTextNode(response.name));
       	});
 			});
-   }
+  }
   
   //lists - strip namespace for ie
   var listTags = findTag('list');
@@ -88,13 +88,13 @@ function replaceListNode(data, textStatus, jqXHR)
 	// code for IE
 	if (window.ActiveXObject)
 	{
-		trace("Creating XML ActiveXObject...")
+	  trace("Creating XML ActiveXObject...")
 	  var xmldoc = new ActiveXObject("Microsoft.XMLDOM");
 	  xmldoc.async=false;
 	  xmldoc.load(data);
 		trace("Transforming with xsl: ")
 		trace(_listXsl);
-    resultDocument=xmldoc.transformNode(_listXsl);
+    	resultDocument=xmldoc.transformNode(_listXsl);
 		trace(typeof(resultDocument));
 	  //document.getElementById("example").innerHTML=resultDocument;
 	}
@@ -105,6 +105,8 @@ function replaceListNode(data, textStatus, jqXHR)
 	  xsltProcessor.importStylesheet(_listXsl);
 	  resultDocument = xsltProcessor.transformToFragment(data,document);
 	}
+	var cols = jQuery(this).attr('cols');
+	if(cols) {jQuery(resultDocument).children().removeClass('size4').addClass('size'+cols);}
 	jQuery(this).replaceWith(resultDocument);
 	initFluidLists();
 	resizeFacebook();

@@ -1,6 +1,6 @@
 require 'sinatra'
 require 'sinatra/reloader' if development?
-require 'rack-flash'
+require 'sinatra/flash'
 require 'haml'
 require 'lib/helper'
 require 'data_mapper'
@@ -12,7 +12,6 @@ enable :sessions
 disable :protection #facebook requests fail this
 set :raise_errors, true #allow exceptional to catch our exceptions
 set :haml, :format => :html5, :layout=>:layout
-use Rack::Flash
 
 class WelcomePage
   include DataMapper::Resource
@@ -152,7 +151,6 @@ end
 
 get '/' do
 	get_content_for_welcome_page
-  p "ERR: #{flash[:error]}"
 	haml :index
 end
 

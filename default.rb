@@ -99,7 +99,9 @@ helpers do
 end
 
 before do
+
   p "CURRENT SESSION: #{session[:page_id]}|#{session[:app_id]}"
+  p session
 
    #grab tab id
    @page_id = nil
@@ -135,6 +137,7 @@ before do
 	 end
 
    p "CURRENT SESSION (END OF BEGIN): #{session[:page_id]}|#{session[:app_id]}"
+   p session
 end
 
 after do

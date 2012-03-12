@@ -87,6 +87,10 @@ helpers do
   def given_email_cookie_name
     "venpop_email_#{@app_id}_#{@page_id}"
   end
+
+  def testing_cookie_name
+    "venpop_#{@app_id}_#{@page_id}"
+  end
 end
 
 before do
@@ -115,6 +119,8 @@ before do
    @admin = session[:admin]
    @app_id = session[:app_id]
    @secret_key = session[:secret_key]
+
+   response.set_cookie(testing_cookie_name, {:value => '1'})
 
 	 if(request.cookies[given_email_cookie_name])
 	 		@given_email = true
@@ -224,7 +230,7 @@ post '/email' do
 			haml :index
 		end
 	end
-	response.set_cookie(given_email_cookie_name, { :expires => Time.now+365*24*60*60 } )
+	response.set_cookie(given_email_cookie_name, { :expires => Time.now+365*24*60*60, :value=>Time.now.to_s } )
   redirect '/?referrer=email'	
 end
 
@@ -283,5 +289,10 @@ get '/post-oauth' do
 		#p token_url
 		"Error authenticating with facebook: #{$!}"
 	end
+end
+
+get '/clear-email' do
+  response.set_cookie(given_email_cookie_name, { :expires => Time.now-1} )
+  "<script type='text/javascript'>history.go(-1);</script>"
 end
 

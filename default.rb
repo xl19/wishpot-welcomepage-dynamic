@@ -109,7 +109,7 @@ before do
 	 @given_email = false
 	 
 
-   if(!params[:signed_request].nil? || (session.nil? && !params[:cloned_signed_request].nil?))
+   if(!params[:signed_request].nil? || (session[:page_id].nil? && !params[:cloned_signed_request].nil?))
      # We used to pass a secret key in here, but we can't cache the key in the session because
      # users may switch apps mid-session, which would mean we'd need to re-up the secret key, etc
      fb = FacebookRequest.decode(params[:signed_request] || params[:cloned_signed_request])

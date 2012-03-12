@@ -108,10 +108,11 @@ before do
    @admin = false
 	 @given_email = false
 	 
-   if(!params[:signed_request].nil?)
+
+   if(!params[:signed_request].nil? || (session.nil? && !params[:cloned_signed_request].nil?))
      # We used to pass a secret key in here, but we can't cache the key in the session because
      # users may switch apps mid-session, which would mean we'd need to re-up the secret key, etc
-     fb = FacebookRequest.decode(params[:signed_request])
+     fb = FacebookRequest.decode(params[:signed_request] || params[:cloned_signed_request])
      unless(fb.nil?)
 	   	 session[:page_id] = fb['page']['id']
 	     session[:liked] = fb['page']['liked']
@@ -127,6 +128,7 @@ before do
    @admin = session[:admin]
    @app_id = session[:app_id]
    @secret_key = session[:secret_key]
+   @signed_request = params[:signed_request] || params[:cloned_signed_request]
 
    response.set_cookie(testing_cookie_name, {:value => '1'})
 
@@ -229,7 +231,7 @@ post '/email' do
 		ce = CollectedEmail.first_or_create(:welcome_page=>pg, :email_address=>(params[:email] || params[:email_address]) )
 		ce.user_id = params[:uid] if(params[:uid])
 		details = Array.new
-		params.each{|n,v| details << "#{n}: #{v}" if n != 'email' && n != 'uid'}
+		params.each{|n,v| details << "#{n}: #{v}" if n != 'email' && n != 'uid' && n != 'isPost' && n != 'cloned_signed_request'}
 		ce.details = details*', '
 		
 	  unless ce.save

@@ -25,7 +25,8 @@
     :javascript
       var VP = {
         PageId : '#{@page_id}',
-        AppId : '#{@app_id}'
+        AppId : '#{@app_id}',
+        FbRequest: '#{@signed_request}'
       }
       window.fbAsyncInit = function() {
         FB.init({
@@ -39,6 +40,7 @@
             appendDetailsToForm(response.session); 
           } else {
             // no user session available, someone you dont know
+            appendDetailsToForm();
           }
         });
         FB.Canvas.setSize();

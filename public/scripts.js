@@ -8,6 +8,8 @@ function appendDetailsToForm(session)
 	{
 		jQuery('form').append("<input type=\"hidden\" name=\"uid\" value=\""+session.uid+"\" />");
 	}
+
+	jQuery('form').append("<input type=\"hidden\" name=\"cloned_signed_request\" value=\""+VP.FbRequest+"\" />");
 }
 
 function trace(msg)

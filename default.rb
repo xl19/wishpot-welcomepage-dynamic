@@ -99,6 +99,8 @@ helpers do
 end
 
 before do
+  p "CURRENT SESSION: #{session[:page_id]}|#{session[:app_id]}"
+
    #grab tab id
    @page_id = nil
    @liked = false
@@ -131,6 +133,8 @@ before do
 	 		@given_email = true
 	 		@just_given_email = (request['referrer'] == 'email')
 	 end
+
+   p "CURRENT SESSION (END OF BEGIN): #{session[:page_id]}|#{session[:app_id]}"
 end
 
 after do

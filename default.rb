@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'sinatra/reloader' if development?
+require 'rack-flash'
 require 'haml'
 require 'lib/helper'
 require 'data_mapper'
@@ -11,6 +12,7 @@ enable :sessions
 disable :protection #facebook requests fail this
 set :raise_errors, true #allow exceptional to catch our exceptions
 set :haml, :format => :html5, :layout=>:layout
+use Rack::Flash
 
 class WelcomePage
   include DataMapper::Resource
@@ -52,6 +54,9 @@ configure :production do
   require 'newrelic_rpm'
   require 'exceptional'
   use Rack::Exceptional, ' b4b310a81cc2b96c94d12c5a9077ab5c65cd8225'
+
+  #So we can log in heroku: http://devcenter.heroku.com/articles/ruby#logging
+  stdout.sync = true
 end
 
 configure :development do
@@ -140,6 +145,7 @@ end
 
 get '/' do
 	get_content_for_welcome_page
+  p "ERR: #{flash[:error]}"
 	haml :index
 end
 
@@ -222,13 +228,15 @@ post '/email' do
 		ce.details = details*', '
 		
 	  unless ce.save
-			@err_msg = "Error: "
+			flash[:error] = "Error: "
 			ce.errors.each do |e|
-       @err_msg << " #{e.to_s}"
+        flash[:error] << " #{e.to_s}"
     	end
 			@content = pg.text
 			haml :index
 		end
+  else
+    p "WARN: Posted to the e-mail handler, but looks like we have no session."
 	end
 	response.set_cookie(given_email_cookie_name, { :expires => Time.now+365*24*60*60, :value=>Time.now.to_s } )
   redirect '/?referrer=email'	
@@ -293,6 +301,6 @@ end
 
 get '/clear-email' do
   response.set_cookie(given_email_cookie_name, { :expires => Time.now-1} )
-  "<script type='text/javascript'>history.go(-1);</script>"
+  "<script type='text/javascript'>history.go(-1);window.location.href='/';</script>"
 end
 

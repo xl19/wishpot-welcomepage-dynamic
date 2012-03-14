@@ -185,7 +185,8 @@ get '/doauth' do
 end
 
 get '/admin' do
-  #p "ADMIN SEES ACCESS TOKEN: #{session_access_token}"
+  p "ADMIN SEES CURRENT SESSION: #{session[:page_id]}|#{session[:app_id]}"
+  
 	#make sure we have the admin's email address
 	if session_access_token.nil?
 	  redirect '/doauth'

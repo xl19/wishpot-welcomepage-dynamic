@@ -99,7 +99,7 @@ end
 
 before do
 
-  p "CURRENT SESSION: #{session[:page_id]}|#{session[:app_id]}"
+  p "CURRENT SESSION: #{session.inspect}"
   p session
 
    #grab tab id
@@ -137,7 +137,7 @@ before do
 	 		@just_given_email = (request['referrer'] == 'email')
 	 end
 
-   p "CURRENT SESSION (END OF BEGIN): #{session[:page_id]}|#{session[:app_id]}"
+   p "CURRENT SESSION (END OF BEGIN): #{session.inspect}"
    p session
 end
 
@@ -185,7 +185,7 @@ get '/doauth' do
 end
 
 get '/admin' do
-  p "ADMIN SEES CURRENT SESSION: #{session[:page_id]}|#{session[:app_id]}"
+  p "ADMIN SEES CURRENT SESSION: #{session.inspect}"
   
 	#make sure we have the admin's email address
 	if session_access_token.nil?

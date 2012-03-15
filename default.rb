@@ -129,6 +129,8 @@ before do
 	  end
    end
 
+   session_cookie = Hash.new if session_cookie.nil?
+
    @page_id = session[:page_id] || session_cookie[:page_id]
    @liked = session[:liked] || session_cookie[:liked]
    @admin = session[:admin] || session_cookie[:admin]

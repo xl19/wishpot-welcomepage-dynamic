@@ -102,6 +102,10 @@ before do
   p "CURRENT SESSION: #{session.inspect}"
   p session
 
+  p "SESSION COOKIE: #{request.cookies['rack.session']}"
+  #m = Rack::Session::Cookie::Base64::Marshal.new
+  #m.decode(request.cookies['rack.session'])
+
    #grab tab id
    @page_id = nil
    @liked = false

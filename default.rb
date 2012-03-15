@@ -102,9 +102,11 @@ before do
   p "CURRENT SESSION: #{session.inspect}"
   p session
 
+
   p "SESSION COOKIE: #{request.cookies['rack.session']}"
-  #m = Rack::Session::Cookie::Base64::Marshal.new
-  #m.decode(request.cookies['rack.session'])
+ 
+  m = Rack::Session::Cookie::Base64::Marshal.new
+  session_cookie = m.decode(request.cookies['rack.session'])
 
    #grab tab id
    @page_id = nil
@@ -127,11 +129,11 @@ before do
 	  end
    end
 
-   @page_id = session[:page_id]
-   @liked = session[:liked]
-   @admin = session[:admin]
-   @app_id = session[:app_id]
-   @secret_key = session[:secret_key]
+   @page_id = session[:page_id] || session_cookie[:page_id]
+   @liked = session[:liked] || session_cookie[:liked]
+   @admin = session[:admin] || session_cookie[:admin]
+   @app_id = session[:app_id] || session_cookie[:app_id]
+   @secret_key = session[:secret_key] || session_cookie[:secret_key]
    @signed_request = params[:signed_request] || params[:cloned_signed_request]
 
    response.set_cookie(testing_cookie_name, {:value => '1'})

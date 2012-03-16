@@ -8,7 +8,10 @@ require 'open-uri'
 require 'json'
 require 'aws/ses' #for sending mail for leads
 
-enable :sessions
+use Rack::Session::Cookie, :key => 'rack.session',
+                           :path => '/',
+                           :secret => 'venpop'
+
 disable :protection #facebook requests fail this
 enable :raise_errors #allow exceptional to catch our exceptions
 set :haml, :format => :html5, :layout=>:layout

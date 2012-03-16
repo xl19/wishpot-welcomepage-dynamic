@@ -10,7 +10,7 @@ require 'aws/ses' #for sending mail for leads
 
 enable :sessions
 disable :protection #facebook requests fail this
-set :raise_errors, true #allow exceptional to catch our exceptions
+enable :raise_errors #allow exceptional to catch our exceptions
 set :haml, :format => :html5, :layout=>:layout
 
 class WelcomePage
@@ -95,14 +95,10 @@ helpers do
   def testing_cookie_name
     "venpop_#{@app_id}_#{@page_id}"
   end
-
-  def session_cookie
-      m = Rack::Session::Cookie::Base64::Marshal.new
-      m.decode(request.cookies['rack.session']) || Hash.new
-  end
 end
 
 before do
+  session[:page_id]
 
   p "CURRENT SESSION: #{session.inspect}"
   p session
@@ -133,12 +129,12 @@ before do
 	  end
    end
 
-   @page_id = session[:page_id] || session_cookie[:page_id]
-   @liked = session[:liked] || session_cookie[:liked]
-   @admin = session[:admin] || session_cookie[:admin]
-   @app_id = session[:app_id] || session_cookie[:app_id]
-   @secret_key = session[:secret_key] || session_cookie[:secret_key]
-   @signed_request = params[:signed_request] || params[:cloned_signed_request]
+   @page_id = session[:page_id]
+   @liked = session[:liked]
+   @admin = session[:admin]
+   @app_id = session[:app_id]
+   @secret_key = session[:secret_key]
+   @signed_request = params[:signed_request]
 
    response.set_cookie(testing_cookie_name, {:value => '1'})
 
@@ -146,9 +142,6 @@ before do
 	 		@given_email = true
 	 		@just_given_email = (request['referrer'] == 'email')
 	 end
-
-   p "CURRENT SESSION (END OF BEGIN): #{session.inspect}"
-   p session
 end
 
 after do
@@ -195,6 +188,7 @@ get '/doauth' do
 end
 
 get '/admin' do
+  session[:page_id]
   p "ADMIN SEES CURRENT SESSION: #{session.inspect}"
   
 	#make sure we have the admin's email address

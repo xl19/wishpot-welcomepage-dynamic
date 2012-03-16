@@ -95,6 +95,11 @@ helpers do
   def testing_cookie_name
     "venpop_#{@app_id}_#{@page_id}"
   end
+
+  def session_cookie
+      m = Rack::Session::Cookie::Base64::Marshal.new
+      m.decode(request.cookies['rack.session']) || Hash.new
+  end
 end
 
 before do
@@ -102,11 +107,10 @@ before do
   p "CURRENT SESSION: #{session.inspect}"
   p session
 
+  p "COOKIES:"
+  p request.cookies
 
-  p "SESSION COOKIE: #{request.cookies['rack.session']}"
- 
-  m = Rack::Session::Cookie::Base64::Marshal.new
-  session_cookie = m.decode(request.cookies['rack.session'])
+
 
    #grab tab id
    @page_id = nil
@@ -128,8 +132,6 @@ before do
 	     session[:secret_key] = fb['secret_key'] if !fb['secret_key'].nil?
 	  end
    end
-
-   session_cookie = Hash.new if session_cookie.nil?
 
    @page_id = session[:page_id] || session_cookie[:page_id]
    @liked = session[:liked] || session_cookie[:liked]

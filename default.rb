@@ -95,6 +95,15 @@ helpers do
   def testing_cookie_name
     "venpop_#{@app_id}_#{@page_id}"
   end
+
+  #this gets the value from the rack cookie, which we decode ourselves, if 
+  #for some reason the session is not loading.
+  def safe_get_from_session(val)
+      return session[val] unless session[val].nil?
+      m = Rack::Session::Cookie::Base64::Marshal.new
+      c = m.decode(request.cookies['rack.session']) || Hash.new
+      return c[val]
+  end
 end
 
 before do
@@ -105,8 +114,6 @@ before do
 
   p "COOKIES:"
   p request.cookies
-
-
 
    #grab tab id
    @page_id = nil
@@ -129,12 +136,12 @@ before do
 	  end
    end
 
-   @page_id = session[:page_id]
-   @liked = session[:liked]
-   @admin = session[:admin]
-   @app_id = session[:app_id]
-   @secret_key = session[:secret_key]
-   @signed_request = params[:signed_request]
+   @page_id = safe_get_from_session(:page_id)
+   @liked = safe_get_from_session(:liked)
+   @admin = safe_get_from_session(:admin)
+   @app_id = safe_get_from_session(:app_id)
+   @secret_key = safe_get_from_session(:secret_key)
+   @signed_request = safe_get_from_session(:cloned_signed_request)
 
    response.set_cookie(testing_cookie_name, {:value => '1'})
 
@@ -181,7 +188,7 @@ end
 #Redirects the user to auth.  Call this on expired sessions, or non-existent sessions.
 get '/doauth' do
   if @app_id.nil?
-    p "NIL APPID IN DOAUTH: #{session[:app_id]}"
+    p "NIL APPID IN doauth"
     p request.cookies
     haml :reidentify_app if @app_id.nil?
   else
@@ -191,9 +198,7 @@ end
 
 get '/admin' do
   session[:page_id]
-  p "ADMIN SEES CURRENT SESSION: #{session.inspect}"
-  p "ADMIN SEES COOKIES:"
-  p request.cookies
+  p "ADMIN SEES CURRENT SESSION: #{session.inspect} and instance variable for app_id is #{@app_id}"
   
 	#make sure we have the admin's email address
 	if session_access_token.nil?

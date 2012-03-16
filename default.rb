@@ -8,6 +8,7 @@ require 'open-uri'
 require 'json'
 require 'aws/ses' #for sending mail for leads
 
+#This long version is apparently required or the cookies get lost on heroku
 use Rack::Session::Cookie, :key => 'rack.session',
                            :path => '/',
                            :secret => 'venpop'
@@ -99,25 +100,9 @@ helpers do
     "venpop_#{@app_id}_#{@page_id}"
   end
 
-  #this gets the value from the rack cookie, which we decode ourselves, if 
-  #for some reason the session is not loading.
-  def safe_get_from_session(val)
-      return session[val] unless session[val].nil?
-      m = Rack::Session::Cookie::Base64::Marshal.new
-      c = m.decode(request.cookies['rack.session']) || Hash.new
-      return c[val]
-  end
 end
 
 before do
-  session[:page_id]
-
-  p "CURRENT SESSION: #{session.inspect}"
-  p session
-
-  p "COOKIES:"
-  p request.cookies
-
    #grab tab id
    @page_id = nil
    @liked = false
@@ -139,12 +124,12 @@ before do
 	  end
    end
 
-   @page_id = safe_get_from_session(:page_id)
-   @liked = safe_get_from_session(:liked)
-   @admin = safe_get_from_session(:admin)
-   @app_id = safe_get_from_session(:app_id)
-   @secret_key = safe_get_from_session(:secret_key)
-   @signed_request = safe_get_from_session(:cloned_signed_request)
+   @page_id = session[:page_id] || session_cookie[:page_id]
+   @liked = session[:liked] || session_cookie[:liked]
+   @admin = session[:admin] || session_cookie[:admin]
+   @app_id = session[:app_id] || session_cookie[:app_id]
+   @secret_key = session[:secret_key] || session_cookie[:secret_key]
+   @signed_request = params[:signed_request] || params[:cloned_signed_request]
 
    response.set_cookie(testing_cookie_name, {:value => '1'})
 
@@ -191,8 +176,6 @@ end
 #Redirects the user to auth.  Call this on expired sessions, or non-existent sessions.
 get '/doauth' do
   if @app_id.nil?
-    p "NIL APPID IN doauth"
-    p request.cookies
     haml :reidentify_app if @app_id.nil?
   else
 	  redirect "https://www.facebook.com/dialog/oauth?client_id=#{@app_id}&scope=email&redirect_uri=#{URI.escape(request.url.gsub(request.path, ''))}/post-oauth"
@@ -200,9 +183,7 @@ get '/doauth' do
 end
 
 get '/admin' do
-  session[:page_id]
-  p "ADMIN SEES CURRENT SESSION: #{session.inspect} and instance variable for app_id is #{@app_id}"
-  
+
 	#make sure we have the admin's email address
 	if session_access_token.nil?
 	  redirect '/doauth'

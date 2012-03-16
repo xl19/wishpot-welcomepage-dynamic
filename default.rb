@@ -181,6 +181,8 @@ end
 #Redirects the user to auth.  Call this on expired sessions, or non-existent sessions.
 get '/doauth' do
   if @app_id.nil?
+    p "NIL APPID IN DOAUTH: #{session[:app_id]}"
+    p request.cookies
     haml :reidentify_app if @app_id.nil?
   else
 	  redirect "https://www.facebook.com/dialog/oauth?client_id=#{@app_id}&scope=email&redirect_uri=#{URI.escape(request.url.gsub(request.path, ''))}/post-oauth"

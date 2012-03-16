@@ -190,6 +190,8 @@ end
 get '/admin' do
   session[:page_id]
   p "ADMIN SEES CURRENT SESSION: #{session.inspect}"
+  p "ADMIN SEES COOKIES:"
+  p request.cookies
   
 	#make sure we have the admin's email address
 	if session_access_token.nil?

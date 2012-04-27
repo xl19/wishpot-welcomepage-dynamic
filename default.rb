@@ -131,7 +131,6 @@ before do
 	     #these values are only set if we didn't pass in an existing secret
 	     session[:app_id] = fb['app_id'] if !fb['app_id'].nil?
 	     session[:secret_key] = fb['secret_key'] if !fb['secret_key'].nil?
-       puts fb
 	  end
    end
 

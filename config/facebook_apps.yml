@@ -14,7 +14,8 @@ production:
 production2:
   id: 113028492140978
   secret: 52b497d083a4396b5c474c4aa503e3c2
-  name: Welcome Page
+  name: Product Sheet
+  default: product_sheet.html
 email:
   id: 168972276525968
   secret: b086d7c826bff4e053bb970006cd19b9

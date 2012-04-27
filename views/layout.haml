@@ -26,7 +26,7 @@
       var VP = {
         PageId : '#{@page_id}',
         AppId : '#{@app_id}',
-        FbRequest: '#{@signed_request}'
+        FbRequest: '#{@signed_request}',
       }
       window.fbAsyncInit = function() {
         FB.init({
@@ -44,6 +44,8 @@
           }
         });
         FB.Canvas.setSize();
+        WPJS.FbJsHasInited = true;
+        trace('triggering fbInit now');
         jQuery('body').trigger('fbInit'); //allow others to wait on facebook to load
       };
       (function() {

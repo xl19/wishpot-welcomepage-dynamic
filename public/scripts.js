@@ -46,16 +46,6 @@ var _listXsl = null;
 function parseVenpopML()
 {
 	trace("Parsing Venpop Markup");
-  var tags = findTag('pagename');
-  if(null != tags && tags.length > 0 && VP.PageId != null)
-  {
-		requireFacebookInit(function(){
-      	FB.api('/'+VP.PageId, function(response) {
-	        if(response != undefined)
-	          replaceTags(tags, document.createTextNode(response.name));
-      	});
-			});
-  }
   
   //lists - strip namespace for ie
   var listTags = findTag('list');
@@ -121,10 +111,11 @@ function handleAjaxError(data, textStatus, jqXHR)
 }
 
 //Wrap any call that requires facebook to be init'ed in this function
+//we settimeout if we need to wait, due to timing issues seen with the fb api
 function requireFacebookInit(func)
 {
-	if(typeof(FB) != 'undefined' && typeof(FB.Canvas) != 'undefined') { func(); }
-	else {	jQuery('body').bind('fbInit', func); }
+	if(typeof(FB) != 'undefined' && typeof(FB.Canvas) != 'undefined' && WPJS.FbJsHasInited) { trace('fb loaded, not firing fbinit.'); func(); }
+	else { trace('will wait for fbInit to fire.'); jQuery('body').bind('fbInit', function(){window.setTimeout(func, 500);}); }
 }
 
 //This is a best-effort resize.  if facebook isn't loaded, is a no-op (which is okay, since)

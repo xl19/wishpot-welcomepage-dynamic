@@ -6,7 +6,7 @@
 %span{:style=>'font-size: 1.5em'} 
   %strong=current_app['name'] 
 %span Editing:
-%vp:pagename
+%span{'data-bind'=>'text: name'}
 %span.wishpot_err=@err_msg
 %span.wishpot_status=@status_msg
 %form{:action=>'/admin', :method=>'post', :style=>'margin-top: 1em;'}
@@ -73,6 +73,7 @@
         Email addresses can be downloaded
         %a{:href=>'/download_emails'} here
     %script{:type=>'text/javascript', :src=>'/tiny_mce/tiny_mce.js'}
+    %script{:type=>'text/javascript', :src=>'/scripts/knockout-2.0.0.js'}
 :javascript
   tinyMCE.init({
     mode : "textareas",
@@ -109,8 +110,19 @@
               }
             }
         });
-    }
-    
+    }  
   });
+  
+ 
+    $(function(){
+      requireFacebookInit(function(){
+        FB.api('/#{@page_id}', function(response) {
+          trace(response)
+          ko.applyBindings(response);
+        });
+      });
+    });
+  
+  
 
   

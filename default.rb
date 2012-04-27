@@ -24,15 +24,24 @@ class WelcomePage
   property :text, Text
   property :admin_id, String
   property :admin_email, String
-  property :created_at, DateTime, :default=>DateTime.now.new_offset(0)
+  property :created_at, DateTime, :default=>lambda { |r, p| DateTime.now.new_offset(0) }
 	has n, :collected_emails
+  has n, :welcome_page_edits
+end
+
+class WelcomePageEdit
+  include DataMapper::Resource
+  property :edited_at, DateTime, :default=>lambda { |r, p| DateTime.now.new_offset(0) }
+  property :user_id, String
+  property :ip_address, String
+  belongs_to :welcome_page, :key=>true
 end
 
 class CollectedEmail
 	include DataMapper::Resource
 	property :user_id, String
 	property :email_address, String
-  property :created_at, DateTime, :default=>DateTime.now.new_offset(0)	
+  property :created_at, DateTime, :default=>lambda { |r, p| DateTime.now.new_offset(0) }
 	property :details, Text
 	belongs_to :welcome_page, :key=>true
 end
@@ -118,9 +127,11 @@ before do
 	   	 session[:page_id] = fb['page']['id']
 	     session[:liked] = fb['page']['liked']
 	     session[:admin] = fb['page']['admin']
+       session[:user_id] = fb['user_id']
 	     #these values are only set if we didn't pass in an existing secret
 	     session[:app_id] = fb['app_id'] if !fb['app_id'].nil?
 	     session[:secret_key] = fb['secret_key'] if !fb['secret_key'].nil?
+       puts fb
 	  end
    end
 
@@ -130,6 +141,7 @@ before do
    @app_id = session[:app_id] 
    @secret_key = session[:secret_key] 
    @signed_request = params[:signed_request] || params[:cloned_signed_request]
+   @user_id = session[:user_id]
 
    response.set_cookie(testing_cookie_name, {:value => '1'})
 
@@ -216,6 +228,8 @@ post '/admin' do
     end
 		@content = params['content']
 	else
+    edit = WelcomePageEdit.create(:welcome_page=>pg,:user_id=>@user_id, :ip_address=>request.ip)
+  
 		@status_msg = "Saved!"
 	end
 	@content = params['content']

@@ -4,7 +4,7 @@
     %link{:href=>'/styles.css', :rel=>'stylesheet', :type=>'text/css'}
     %title welcome
     %script{:type=>'text/javascript', :src=>'//www.google.com/jsapi?key=ABQIAAAAJGyvUfsdpH6X7cJmljZWzxR11mSib7gv-rFwxoFlYwqwfyHHWRQL47mbtaJBqREUwz5NDmywjO0lCg'}
-    %script{:type=>'text/javascript', :src=>'//www.wishpot.com/scripts/wishpot.js'}
+    %script{:type=>'text/javascript', :src=>'//wishpot.s3.amazonaws.com/web/scripts/wishpot.js.closure'}
     :javascript
       google.load("jquery", "1.7.1", {uncompressed:false});
       var _gaq = _gaq || [];
@@ -54,7 +54,7 @@
         e.async = true;
         document.getElementById('fb-root').appendChild(e);
       }());
-    %script{:type=>'text/javascript', :src=>'//www.wishpot.com/scripts/wishpot_bottom.js'}
+    %script{:type=>'text/javascript', :src=>'//wishpot.s3.amazonaws.com/web/scripts/wishpot_bottom.js.closure'}
     %script{:type=>'text/javascript', :src=>'/scripts.js'}
     
     

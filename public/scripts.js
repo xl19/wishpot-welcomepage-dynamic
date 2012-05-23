@@ -102,6 +102,7 @@ function replaceListNode(data, textStatus, jqXHR)
 	jQuery(this).replaceWith(resultDocument);
 	initFluidLists();
 	resizeFacebook();
+	correctErroredImages();
 }
 
 function handleAjaxError(data, textStatus, jqXHR)

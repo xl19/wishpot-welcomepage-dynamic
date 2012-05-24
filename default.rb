@@ -218,7 +218,7 @@ end
 
 post '/admin' do
   return "Sorry, your session may have timed out.  Please go back to your fan page, and click 'edit' again" if (@page_id.nil? || @app_id.nil? || @user_id.nil?)
-  pg = WelcomePage.first_or_create({:page_id=>@page_id.to_s, :app_id=>@app_id.to_s}, {:text => params['content'], :user_id=>@user_id})
+  pg = WelcomePage.first_or_create({:page_id=>@page_id.to_s, :app_id=>@app_id.to_s}, {:text => params['content'], :admin_id=>@user_id})
 	pg.attributes = {:text => params['content']}
  	unless pg.save
 		@err_msg = "Error: "

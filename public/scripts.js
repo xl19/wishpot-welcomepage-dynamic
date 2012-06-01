@@ -47,8 +47,8 @@ function parseVenpopML()
 {
 	trace("Parsing Venpop Markup");
   
-  //lists - strip namespace for ie
-  var listTags = findTag('list');
+	//lists - strip namespace for ie
+	var listTags = findTag('list');
 	if(null != listTags)
 	{
 		trace("Found "+listTags.length+" list tags");
@@ -72,6 +72,16 @@ function parseVenpopML()
 			});
 	  }
 	}else{trace("Found no list tags");}
+
+	var analyticsTags = findTag('analytics');
+	if(null != analyticsTags)
+	{
+		for(var i=0; i<analyticsTags.length;i++)
+		{
+			_gaq.push(['_setAccount', analyticsTags[i].getAttribute('id')]);
+        	_gaq.push(['_trackPageview']);
+		}
+	}
 }
 
 function replaceListNode(data, textStatus, jqXHR)

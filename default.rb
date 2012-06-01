@@ -251,11 +251,12 @@ end
 post '/email' do
 	unless @page_id.nil?
 		pg = WelcomePage.get(@page_id, @app_id)
-		ce = CollectedEmail.first_or_create(:welcome_page=>pg, :email_address=>(params[:email] || params[:email_address]) )
+		ce = CollectedEmail.create(:email_address=>(params[:email] || params[:email_address]))
 		ce.user_id = params[:uid] if(params[:uid])
 		details = Array.new
 		params.each{|n,v| details << "#{n}: #{v}" if n != 'email' && n != 'uid' && n != 'isPost' && n != 'cloned_signed_request'}
 		ce.details = details*', '
+    pg.collected_emails << ce
 		
 	  unless ce.save
 			flash[:error] = "Error: "

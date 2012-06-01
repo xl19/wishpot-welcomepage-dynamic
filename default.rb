@@ -21,6 +21,7 @@ class WelcomePage
   include DataMapper::Resource
   property :page_id, String, :key=>true
   property :app_id, String, :key=>true
+  property :page_name, String
   property :text, Text
   property :admin_id, String
   property :admin_email, String
@@ -34,6 +35,7 @@ class WelcomePageEdit
   property :edited_at, DateTime, :default=>lambda { |r, p| DateTime.now.new_offset(0) }
   property :user_id, String
   property :ip_address, String
+  property :text, Text
   belongs_to :welcome_page, :key=>true
 end
 
@@ -107,6 +109,10 @@ helpers do
 
   def testing_cookie_name
     "venpop_#{@app_id}_#{@page_id}"
+  end
+
+  def is_fully_authed?
+    (!session_access_token.nil? && !@user_id.nil?)
   end
 
 end
@@ -196,7 +202,7 @@ end
 get '/admin' do
 
 	#make sure we have the admin's email address
-	if session_access_token.nil?
+	if !is_fully_authed?
 	  redirect '/doauth'
 	end
   
@@ -217,8 +223,9 @@ get '/admin' do
 end
 
 post '/admin' do
-  return "Sorry, your session may have timed out.  Please go back to your fan page, and click 'edit' again" if (@page_id.nil? || @app_id.nil? || @user_id.nil?)
-  pg = WelcomePage.first_or_create({:page_id=>@page_id.to_s, :app_id=>@app_id.to_s}, {:text => params['content'], :user_id=>@user_id})
+  return "Sorry, your session may have timed out.  Please go back to your fan page, and click 'edit' again" unless is_fully_authed?
+  pg = WelcomePage.first_or_create({:page_id=>@page_id.to_s, :app_id=>@app_id.to_s}, {:user_id=>@user_id})
+  previous_text = pg.text #store in case we want to keep it in an edit record
 	pg.attributes = {:text => params['content']}
  	unless pg.save
 		@err_msg = "Error: "
@@ -227,7 +234,12 @@ post '/admin' do
     end
 		@content = params['content']
 	else
-    edit = WelcomePageEdit.create(:welcome_page=>pg,:user_id=>@user_id, :ip_address=>request.ip)
+    last_edit = pg.welcome_page_edits.last
+
+    #save the text to the db when a certain amount of time has passed, or if the user changed
+    include_text = last_edit.nil? || last_edit.user_id != @user_id || last_edit.edited_at < DateTime.now - (1/24.0)
+    
+    edit = WelcomePageEdit.create(:welcome_page=>pg,:user_id=>@user_id, :ip_address=>request.ip, :text=>(include_text ? previous_text : nil))
   
 		@status_msg = "Saved!"
 	end
@@ -281,11 +293,14 @@ get '/post-oauth' do
 	  #p "going to request access token for app #{@app_id} on page #{@page_id} with the returned code: #{params[:code]}"
 		set_session_access_token FacebookRequest.get_access_token(@app_id, @secret_key, params[:code], URI.escape(request.url.gsub(request.path, '').gsub('?'+request.query_string, ''))+"/post-oauth")
 		@me = FacebookRequest.get_user(session_access_token)
-		pg = WelcomePage.first_or_create({:page_id=>@page_id.to_s}, {:app_id=>@app_id})
+		pg = WelcomePage.first_or_create({:page_id=>@page_id.to_s, :app_id=>@app_id})
+    @fb_page = FacebookRequest.get_by_id(@page_id, session_access_token)
 		
 		is_new = pg.admin_id.nil? #keep track of whether or not this is a new welcome page, for CRM
 		
 		pg.attributes = {:admin_id => @me['id'], :admin_email=>@me['email']}
+    pg.attributes = {:page_name=>@fb_page['name']} unless @fb_page.nil?
+
 		pg.save
 		
 		if is_new
@@ -312,7 +327,7 @@ get '/post-oauth' do
   	
 		redirect '/admin'
 	rescue
-		#p token_url
+    p $!.backtrace
 		"Error authenticating with facebook: #{$!}"
 	end
 end

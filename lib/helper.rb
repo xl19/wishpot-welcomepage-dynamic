@@ -72,6 +72,17 @@ class FacebookRequest
     #p "Running query: https://graph.facebook.com/fql?q=#{URI.escape(q)}"
     return JSON.parse open("https://graph.facebook.com/fql?q=#{URI.escape(q)}").string
   end
+
+  #This just calls the facebook api with a single identifier, returning the info about it
+  def self.get_by_id(id, access_token)
+    url = "https://graph.facebook.com/#{id}?#{URI.escape(access_token)}"
+    begin
+      return JSON.parse open(url).string
+    rescue
+      p "Error at: #{url} -> #{$!}"
+      return nil
+    end
+  end
   
   
   private

@@ -112,7 +112,11 @@ function replaceListNode(data, textStatus, jqXHR)
 	jQuery(this).replaceWith(resultDocument);
 	initFluidLists();
 	resizeFacebook();
-	correctErroredImages();
+
+	//hack, but we're not under https, correctErroredImages is going to replace all unloaded images.
+	//they need some time.
+	if (window.location.protocol == 'https:') { correctErroredImages(); }
+	else { window.setTimeout(correctErroredImages, 3000); }
 }
 
 function handleAjaxError(data, textStatus, jqXHR)

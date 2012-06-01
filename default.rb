@@ -224,7 +224,7 @@ end
 
 post '/admin' do
   return "Sorry, your session may have timed out.  Please go back to your fan page, and click 'edit' again" unless is_fully_authed?
-  pg = WelcomePage.first_or_create({:page_id=>@page_id.to_s, :app_id=>@app_id.to_s}, {:user_id=>@user_id})
+  pg = WelcomePage.first_or_create({:page_id=>@page_id.to_s, :app_id=>@app_id.to_s}, {:admin_id=>@user_id})
   previous_text = pg.text #store in case we want to keep it in an edit record
 	pg.attributes = {:text => params['content']}
  	unless pg.save

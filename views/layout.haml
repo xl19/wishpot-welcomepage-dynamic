@@ -9,10 +9,10 @@
       google.load("jquery", "1.7.1", {uncompressed:false});
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-1169481-15']);
-      _gaq.push(['_trackPageview']);
       _gaq.push(['_setCustomVar', 1, 'FbPageId', '#{@page_id}', 2 ]);
       _gaq.push(['_setCustomVar', 2, 'FbAppId', '#{@app_id}', 2 ]);
       _gaq.push(['_setCustomVar', 3, 'Liked', '#{@liked}', 3 ]);
+      _gaq.push(['_trackPageview']);
       (function() {
         var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
         ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';

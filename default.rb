@@ -1,8 +1,8 @@
 require 'sinatra'
-require 'sinatra/reloader' if development?
+#require 'sinatra/reloader' if development?
 require 'sinatra/flash'
 require 'haml'
-require 'lib/helper'
+require './lib/helper'
 require 'data_mapper'
 require 'open-uri'
 require 'json'

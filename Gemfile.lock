@@ -11,6 +11,7 @@ GEM
       mime-types
       xml-simple
     bcrypt-ruby (3.0.1)
+    bcrypt-ruby (3.0.1-x86-mingw32)
     builder (3.0.0)
     data_mapper (1.2.0)
       dm-aggregates (~> 1.2.0)
@@ -60,6 +61,8 @@ GEM
       dm-core (~> 1.2.0)
     do_postgres (0.10.8)
       data_objects (= 0.10.8)
+    do_postgres (0.10.8-x86-mingw32)
+      data_objects (= 0.10.8)
     exceptional (2.0.32)
       rack
     fastercsv (1.5.4)
@@ -94,6 +97,7 @@ GEM
 
 PLATFORMS
   ruby
+  x86-mingw32
 
 DEPENDENCIES
   activesupport
@@ -103,7 +107,7 @@ DEPENDENCIES
   dm-postgres-adapter
   exceptional
   haml
-  json
+  json_pure
   newrelic_rpm
   sinatra
   sinatra-flash

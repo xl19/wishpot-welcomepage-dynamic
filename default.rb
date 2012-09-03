@@ -55,8 +55,8 @@ configure do
   # provides for you, something like: postgres://user:password@host/db, which
   # is what DM wants. This is also a convenient check wether we're in production
   # / not. "sqlite3:///#{Dir.pwd}/db/development.sqlite3"
-  #DataMapper.setup(:default, (ENV["DATABASE_URL"] || "postgres://postgres:wishpot123!@localhost/welcomepage_development" ))
-  DataMapper.setup(:default, (ENV["HEROKU_POSTGRESQL_OLIVE_URL"] || "postgres://postgres:wishpot123!@localhost/welcomepage_development" ))
+  DataMapper.setup(:default, (ENV["DATABASE_URL"] || "postgres://postgres:wishpot123!@localhost/welcomepage_development" ))
+  #DataMapper.setup(:default, (ENV["HEROKU_POSTGRESQL_OLIVE_URL"] || "postgres://postgres:wishpot123!@localhost/welcomepage_development" ))
   DataMapper.finalize
   
   #Uncomment this anytime you want to run the migrations.  It's safe to re-run them.
@@ -130,7 +130,6 @@ before do
    if(!params[:signed_request].nil? || (session[:page_id].nil? && !params[:cloned_signed_request].nil?))
      # We used to pass a secret key in here, but we can't cache the key in the session because
      # users may switch apps mid-session, which would mean we'd need to re-up the secret key, etc
-	 p "TEST\n\n\n"
      fb = FacebookRequest.decode(params[:signed_request] || params[:cloned_signed_request])
      unless(fb.nil?)
 	   	 session[:page_id] = fb['page']['id']

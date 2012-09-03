@@ -3,7 +3,7 @@ require 'sinatra'
 require 'sinatra/flash'
 require 'haml'
 require './lib/helper'
-require './lib/migrations'
+#require './lib/migrations'
 require 'data_mapper'
 require 'open-uri'
 require 'json'
@@ -55,7 +55,7 @@ configure do
   # provides for you, something like: postgres://user:password@host/db, which
   # is what DM wants. This is also a convenient check wether we're in production
   # / not. "sqlite3:///#{Dir.pwd}/db/development.sqlite3"
-  DataMapper.setup(:default, (ENV["DATABASE_URL"] || "postgres://localhost/welcomepage_development" ))
+  DataMapper.setup(:default, (ENV["DATABASE_URL"] || "postgres://postgres:wishpot123!@localhost/welcomepage_development" ))
   DataMapper.finalize
   
   #Uncomment this anytime you want to run the migrations.  It's safe to re-run them.

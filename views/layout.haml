@@ -54,9 +54,8 @@
         WPJS.FbJsHasInited = true;
         trace('triggering fbInit now');
         jQuery('body').trigger('fbInit'); //allow others to wait on facebook to load
-		if (VP.AppId == 210073625689149)
-		{
-			jQuery('meta[property="og:image"]').attr('content',"http://i1025.photobucket.com/albums/y320/Wishpot_photos/pirelli/Pirelli_backpack_img.png" );
+		if (VP.AppId == 210073625689149) {
+		  jQuery('meta[property="og:image"]').attr('content',"http://i1025.photobucket.com/albums/y320/Wishpot_photos/pirelli/Pirelli_backpack_img.png" );
 		}
       };
       (function() {

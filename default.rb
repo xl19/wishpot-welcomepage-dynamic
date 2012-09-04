@@ -61,6 +61,7 @@ configure do
   
   #Uncomment this anytime you want to run the migrations.  It's safe to re-run them.
   require './lib/migrations'
+  p "MIGRATIONS HAVE BEEN RUN"
   DataMapper.auto_upgrade!
   
   FB_CONFIG = YAML.load_file('config/facebook_apps.yml')

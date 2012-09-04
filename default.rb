@@ -127,6 +127,7 @@ before do
 	 @given_email = false
 	 
 
+	# We check for the presence of the signature due to a potential existing Facebook session
    if(!params[:signed_request].nil? || (session[:page_id].nil? && !params[:cloned_signed_request].nil?))
      # We used to pass a secret key in here, but we can't cache the key in the session because
      # users may switch apps mid-session, which would mean we'd need to re-up the secret key, etc
@@ -140,16 +141,21 @@ before do
 	     session[:app_id] = fb['app_id'] if !fb['app_id'].nil?
 	     session[:secret_key] = fb['secret_key'] if !fb['secret_key'].nil?
 	  end
+	 
+	   @page_id = session[:page_id] 
+	   @liked = session[:liked] 
+	   @admin = session[:admin] 
+	   @app_id = session[:app_id] 
+	   @secret_key = session[:secret_key] 
+	   @signed_request = params[:signed_request] || params[:cloned_signed_request]
+	   @user_id = session[:user_id]
+	  
    end
-
-   @page_id = session[:page_id] 
-   @liked = session[:liked] 
-   @admin = session[:admin] 
-   @app_id = session[:app_id] 
-   @secret_key = session[:secret_key] 
-   @signed_request = params[:signed_request] || params[:cloned_signed_request]
-   @user_id = session[:user_id]
-
+   
+   
+   @page_id = params[:fb_page_id]
+   @app_id = params[:fb_app_id]
+   
    response.set_cookie(testing_cookie_name, {:value => '1'})
 
 	 if(request.cookies[given_email_cookie_name])

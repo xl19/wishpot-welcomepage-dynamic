@@ -123,6 +123,7 @@ end
 before do
    #grab tab id
    @page_id = nil
+   @user_id = nil
    @liked = false
    @admin = false
 	 @given_email = false
@@ -142,7 +143,7 @@ before do
 	     #these values are only set if we didn't pass in an existing secret
 	     session[:app_id] = fb['app_id'] if !fb['app_id'].nil?
 	     session[:secret_key] = fb['secret_key'] if !fb['secret_key'].nil?
-		 p "WE ARE ABOUT TO SEE THE SECRET KEY"
+		 p "WE ARE ABOUT TO SE"
 		 p session[:secret_key]
 	  end
 	 

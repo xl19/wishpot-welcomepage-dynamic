@@ -135,17 +135,9 @@ before do
      fb = FacebookRequest.decode(params[:signed_request] || params[:cloned_signed_request])
      unless(fb.nil?)
 	   	 session[:page_id] = fb['page']['id']
-		 p "FB_PAGE ID"
-		 p fb['page']['id']
 	     session[:liked] = fb['page']['liked']
-		 p "FB_LIKED"
-		 p fb['page']['liked']
 	     session[:admin] = fb['page']['admin']
-		 p "FB_PAGE ADMIN"
-		 p fb['page']['admin']
-       session[:user_id] = fb['user_id']
-	     p "FB_USER ID"
-		 p fb['user_id']
+         session[:user_id] = fb['user_id']
 	     #these values are only set if we didn't pass in an existing secret
 	     session[:app_id] = fb['app_id'] if !fb['app_id'].nil?
 	     session[:secret_key] = fb['secret_key'] if !fb['secret_key'].nil?

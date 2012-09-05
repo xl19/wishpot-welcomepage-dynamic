@@ -137,7 +137,7 @@ before do
 	   	 session[:page_id] = fb['page']['id']
 	     session[:liked] = fb['page']['liked']
 	     session[:admin] = fb['page']['admin']
-         session[:user_id] = fb['user_id']
+       session[:user_id] = fb['user_id']
 	     #these values are only set if we didn't pass in an existing secret
 	     session[:app_id] = fb['app_id'] if !fb['app_id'].nil?
 	     session[:secret_key] = fb['secret_key'] if !fb['secret_key'].nil?
@@ -216,6 +216,9 @@ get '/admin' do
 	if !is_fully_authed?
 	  redirect '/doauth'
 	end
+  
+	p "PAGE ID"
+	p @page_id
   
 	return "Sorry, your session may have timed out.  Please go back to your fan page, and click 'edit' again" if @page_id.nil?
 	

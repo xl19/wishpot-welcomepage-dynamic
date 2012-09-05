@@ -157,6 +157,9 @@ before do
 	   p "USER ID"
 	   p @user_id
 	
+	   p "SESSION ACCESS TOKEN"
+	   p session_access_token
+	
    # If we are outside of Facebook	
    else
    
@@ -164,11 +167,7 @@ before do
 	   @app_id = params[:fb_app_id]
 
    end
-   
-   @user_id = session[:user_id]
-   p "USER ID 222"
-   p @user_id   
-   
+	   
    response.set_cookie(testing_cookie_name, {:value => '1'})
 
 	 if(request.cookies[given_email_cookie_name])

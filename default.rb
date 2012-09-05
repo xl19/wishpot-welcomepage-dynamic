@@ -135,13 +135,13 @@ before do
      fb = FacebookRequest.decode(params[:signed_request] || params[:cloned_signed_request])
      unless(fb.nil?)
 	   	 session[:page_id] = fb['page']['id']
-		 p "FB_USER ID"
+		 p "FB_PAGE ID"
 		 p fb['page']['id']
 	     session[:liked] = fb['page']['liked']
-		 p "FB_USER ID"
+		 p "FB_LIKED"
 		 p fb['page']['liked']
 	     session[:admin] = fb['page']['admin']
-		 p "FB_USER ID"
+		 p "FB_PAGE ADMIN"
 		 p fb['page']['admin']
        session[:user_id] = fb['user_id']
 	     p "FB_USER ID"

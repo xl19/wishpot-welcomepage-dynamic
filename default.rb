@@ -203,6 +203,8 @@ end
 
 #Redirects the user to auth.  Call this on expired sessions, or non-existent sessions.
 get '/doauth' do
+  p "APP ID"
+  p @app_id
   if @app_id.nil?
     haml :reidentify_app if @app_id.nil?
   else
@@ -216,9 +218,6 @@ get '/admin' do
 	if !is_fully_authed?
 	  redirect '/doauth'
 	end
-  
-	p "PAGE ID"
-	p @page_id
   
 	return "Sorry, your session may have timed out.  Please go back to your fan page, and click 'edit' again" if @page_id.nil?
 	

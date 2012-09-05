@@ -122,6 +122,7 @@ end
 
 before do
    #grab tab id
+   @app_id = nil
    @page_id = nil
    @liked = false
    @admin = false

@@ -135,8 +135,14 @@ before do
      fb = FacebookRequest.decode(params[:signed_request] || params[:cloned_signed_request])
      unless(fb.nil?)
 	   	 session[:page_id] = fb['page']['id']
+		 p "FB_USER ID"
+		 p fb['page']['id']
 	     session[:liked] = fb['page']['liked']
+		 p "FB_USER ID"
+		 p fb['page']['liked']
 	     session[:admin] = fb['page']['admin']
+		 p "FB_USER ID"
+		 p fb['page']['admin']
        session[:user_id] = fb['user_id']
 	     p "FB_USER ID"
 		 p fb['user_id']

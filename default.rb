@@ -123,7 +123,6 @@ end
 before do
    #grab tab id
    @page_id = nil
-   @user_id = nil
    @liked = false
    @admin = false
 	 @given_email = false
@@ -153,7 +152,7 @@ before do
 	   @app_id = session[:app_id] 
 	   @secret_key = session[:secret_key] 
 	   @signed_request = params[:signed_request] || params[:cloned_signed_request]
-	   @user_id = session[:user_id]
+	   #@user_id = session[:user_id]
 	
    # If we are outside of Facebook	
    else
@@ -162,6 +161,8 @@ before do
 	   @app_id = params[:fb_app_id]
 
    end
+   
+   @user_id = session[:user_id]
 	   
    response.set_cookie(testing_cookie_name, {:value => '1'})
 

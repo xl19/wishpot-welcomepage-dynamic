@@ -132,18 +132,17 @@ before do
    if(!params[:signed_request].nil? || (session[:page_id].nil? && !params[:cloned_signed_request].nil?))
      # We used to pass a secret key in here, but we can't cache the key in the session because
      # users may switch apps mid-session, which would mean we'd need to re-up the secret key, etc
-	 p "WE ARE INTO THE SIGNED_REQUEST CHECK"
      fb = FacebookRequest.decode(params[:signed_request] || params[:cloned_signed_request])
      unless(fb.nil?)
 	   	 session[:page_id] = fb['page']['id']
 	     session[:liked] = fb['page']['liked']
 	     session[:admin] = fb['page']['admin']
        session[:user_id] = fb['user_id']
+	     p "FB_USER ID"
+		 p fb['user_id']
 	     #these values are only set if we didn't pass in an existing secret
 	     session[:app_id] = fb['app_id'] if !fb['app_id'].nil?
 	     session[:secret_key] = fb['secret_key'] if !fb['secret_key'].nil?
-		 p "WE ARE ABOUT TO SE"
-		 p session[:secret_key]
 	  end
 	 
 	   @page_id = session[:page_id] 
@@ -153,12 +152,6 @@ before do
 	   @secret_key = session[:secret_key] 
 	   @signed_request = params[:signed_request] || params[:cloned_signed_request]
 	   @user_id = session[:user_id]
-	   
-	   p "USER ID"
-	   p @user_id
-	
-	   p "SESSION ACCESS TOKEN"
-	   p session_access_token
 	
    # If we are outside of Facebook	
    else

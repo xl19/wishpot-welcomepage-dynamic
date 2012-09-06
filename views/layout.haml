@@ -65,25 +65,25 @@
     :javascript
       if (jQuery.browser.mobile) 
       { 
-        jQuery('#product_list .product .img a.desktop').css("display","none");
         jQuery('#product_list .product .img a.desktop').click(function(){		
           return false; 
         }
-        jQuery('#product_list .product .img a.mobile').css("display","inline");
+        jQuery('#product_list .product .img a.desktop').css("display","none");
         jQuery('#product_list .product .img a.mobile').click(function(){ 
           return true; 
         }
+        jQuery('#product_list .product .img a.mobile').css("display","inline");
       }
       else
       { 
-        jQuery('#product_list .product .img a.mobile').css("display","none");
         jQuery('#product_list .product .img a.mobile').click(function(){ 
           return false; 
         }
-        jQuery('#product_list .product .img a.desktop').css("display","inline");
+        jQuery('#product_list .product .img a.mobile').css("display","none");
         jQuery('#product_list .product .img a.desktop').click(function(){ 
           return true; 
         }
+        jQuery('#product_list .product .img a.desktop').css("display","inline");
       }
   %body
     = yield

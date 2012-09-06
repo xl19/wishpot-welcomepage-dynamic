@@ -62,12 +62,12 @@
       })();
     %script{:type=>'text/javascript', :src=>'/scripts/xdr.js'}
     :javascript
-      (function framesetsize(w,h){
+      function framesetsize(w,h){
        var obj = new Object;
        obj.width = "810px";
        obj.height = "1500px";
        FB.Canvas.setSize(obj);
-      })();
+      }
   %body
     = yield
     %div#fb-root

@@ -65,10 +65,8 @@
     :javascript
       if (jQuery.browser.mobile) 
       { 
-        jQuery('#product_list .product .img a.desktop').css("display","none");
-        jQuery('#product_list .product .img a.mobile').css("display","inline");
-        jQuery('.back_to a.desktop').css("display","none");
-        jQuery('.back_to a.mobile').css("display","inline");
+        jQuery('a.desktop').css("display","none");
+        jQuery('a.mobile').css("display","inline");
       }
   %body
     = yield

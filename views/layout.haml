@@ -65,14 +65,10 @@
     :javascript
       if (jQuery.browser.mobile) 
       { 
-        jQuery('#product_list .product .img a.desktop').click(function(){		
-          return false; 
-        }
         jQuery('#product_list .product .img a.desktop').css("display","none");
         jQuery('#product_list .product .img a.mobile').css("display","inline");
-        jQuery('#product_list .product .img a.mobile').click(function(){ 
-          return true; 
-        }
+        jQuery('.back_to a.desktop').css("display","none");
+        jQuery('.back_to a.mobile').css("display","inline");
       }
   %body
     = yield

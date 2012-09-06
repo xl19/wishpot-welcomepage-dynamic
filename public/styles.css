@@ -32,3 +32,13 @@ body
 {
 	display: none;
 }
+
+.back_to a.desktop
+{
+	display: inline;
+}
+
+.back_to a.mobile
+{
+	display: none;
+}

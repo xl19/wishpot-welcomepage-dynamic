@@ -22,3 +22,13 @@ body
 #help_div li { margin-bottom: 1em; }
 
 #help_div .box { padding: 5px; margin-bottom: 10px; border: 1px solid #CCC; background: #F4F4F4; }
+
+#product_list .product .img a.desktop
+{
+	display: inline;
+}
+
+#product_list .product .img a.mobile
+{
+	display: none;
+}

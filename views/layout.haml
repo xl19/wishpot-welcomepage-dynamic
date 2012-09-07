@@ -64,7 +64,7 @@
     %script{:type=>'text/javascript', :src=>'/scripts/detectmobilebrowser.js'}
     :javascript
       jQuery(document).ready(function () {
-        if (!jQuery.browser.mobile) 
+        if (jQuery.browser.mobile) 
         { 
           jQuery('body').hide();
           //jQuery('a.desktop').css("display","none");

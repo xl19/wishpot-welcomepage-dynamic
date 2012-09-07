@@ -23,12 +23,12 @@ body
 
 #help_div .box { padding: 5px; margin-bottom: 10px; border: 1px solid #CCC; background: #F4F4F4; }
 
-.product a.desktop
+a.desktop
 {
 	display: inline;
 }
 
-.product a.mobile,
+a.mobile,
 {
 	display: none;
 }

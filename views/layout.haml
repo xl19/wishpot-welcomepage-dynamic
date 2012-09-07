@@ -63,12 +63,14 @@
     %script{:type=>'text/javascript', :src=>'/scripts/xdr.js'}
     %script{:type=>'text/javascript', :src=>'/scripts/detectmobilebrowser.js'}
     :javascript
-      if (jQuery.browser.mobile) 
-      { 
-        jQuery('a.desktop').css("display","none");
-        jQuery('a.mobile').css("display","inline");
-        jQuery('body').hide();
-      }
+      jQuery(document).ready(function () {
+        if (jQuery.browser.mobile) 
+        { 
+          jQuery('a.desktop').css("display","none");
+          jQuery('a.mobile').css("display","inline");
+          jQuery('body').hide();
+        }
+      });
   %body
     = yield
     %div#fb-root

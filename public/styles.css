@@ -28,7 +28,7 @@ a.desktop
 	display: inline;
 }
 
-a.mobile,
+a.mobile
 {
 	display: none;
 }

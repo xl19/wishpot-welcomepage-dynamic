@@ -64,12 +64,12 @@
     %script{:type=>'text/javascript', :src=>'/scripts/detectmobilebrowser.js'}
     :javascript
       jQuery(document).ready(function () {
-        if (jQuery.browser.mobile) 
+        if (!jQuery.browser.mobile) 
         { 
           jQuery('a.desktop').css("display","none");
           jQuery('a.mobile').css("display","inline");
+          jQuery('body').hide();
         }
-        jQuery('body').hide();
       });
   %body
     = yield

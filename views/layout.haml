@@ -69,14 +69,11 @@
     %script{:type=>'text/javascript', :src=>'/scripts/xdr.js'}
     %script{:type=>'text/javascript', :src=>'/scripts/detectmobilebrowser.js'}
     :javascript
-      jQuery(document).ready(function () 
-      {
-        if (is_mobile) 
-        { 
-          jQuery('.desktop').hide();
-          jQuery('.mobile').show();
-        }
-      });
+      if (is_mobile) 
+      { 
+        jQuery('.desktop').hide();
+        jQuery('.mobile').show();
+      }
   %body
     = yield
     %div#fb-root

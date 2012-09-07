@@ -71,14 +71,12 @@
     :javascript
       jQuery(document).ready(function () 
       {
-        if (jQuery.browser.mobile) 
+        if (is_mobile) 
         { 
-          alert(jQuery.browser.mobile);
+          alert('Welcome to Pirelli');
           jQuery('.desktop').hide();
           jQuery('.mobile').show();
         }
-        //jQuery('.desktop').hide();
-        //jQuery('.mobile').show();
       });
   %body
     = yield

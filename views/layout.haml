@@ -65,8 +65,8 @@
     :javascript
       if (jQuery.browser.mobile) 
       { 
-        jQuery('a.desktop').css("display","none");
-        jQuery('a.mobile').css("display","inline");
+        jQuery('a.desktop').hide();
+        jQuery('a.mobile').show();
       }
   %body
     = yield

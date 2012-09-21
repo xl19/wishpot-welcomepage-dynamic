@@ -1,50 +1,60 @@
 %html{'xmlns:fb'=>'http://www.facebook.com/2008/fbml', 'xmlns:vp'=>'http://www.venpop.com/2011/vpml'}
   %head
-    %meta{:property=>'og:url', :content=>"http://wishpot-welcomepage.heroku.com/?fb_page_id=#{@page_id}&fb_app_id=#{@app_id}" }
+    %meta{:content=>"http://wishpot-welcomepage.heroku.com/?fb_page_id=#{@page_id}&fb_app_id=#{@app_id}", :property=>'og:url' }
+    %meta{:property=>'og:site_name', :content=>"Pirelli" }
+    %meta{:property=>'og:app_id', :content=>"#{@app_id}" }
     - if @app_id == 113028492140978
+      %meta{:property=>'og:type', :content=>"website" }
       %meta{:property=>'og:image', :content=>"http://photos-d.ak.fbcdn.net/photos-ak-snc7/v85006/59/155760461227283/app_10_155760461227283_989790577.gif" }
       %meta{:property=>'og:title', :content=>"Pirelli Shop" }
       %meta{:property=>'og:description', :content=>"Shop exclusive Pirelli F1 merchandise in the Facebook Pirelli Shop." }
       %meta{:name=>'description', :content=>"Shop exclusive Pirelli F1 merchandise in the Facebook Pirelli Shop." }	  
       %title Pirelli Shop
     - if @app_id == 210073625689149
-      %meta{:property=>'og:image', :content=>"http://i1025.photobucket.com/albums/y320/Wishpot_photos/pirelli/Pirelli_backpack_img.png" }
+      %meta{:property=>'og:type', :content=>"product" }
+      %meta{:property=>'og:image', :content=>"https://vp-welcome.s3.amazonaws.com/f2/490cad0d93fef91e730b7c57248a29/Pirelli_backpack_img.png" }
       %meta{:property=>'og:title', :content=>"PIRELLI SOLAR BACKPACK" }
       %meta{:property=>'og:description', :content=>"The Pirelli solar backpack charges your electronic portable devices: energy and durability with the ultra-thin solar panel. Top performance on the move." }
       %meta{:name=>'description', :content=>"The Pirelli solar backpack charges your electronic portable devices: energy and durability with the ultra-thin solar panel. Top performance on the move." }	  
       %title PIRELLI SOLAR BACKPACK
     - if @app_id == 166089790151083
-      %meta{:property=>'og:image', :content=>"http://i1025.photobucket.com/albums/y320/Wishpot_photos/pirelli/Pirelli_hat_img.png" }
+      %meta{:property=>'og:type', :content=>"product" }
+      %meta{:property=>'og:image', :content=>"https://vp-welcome.s3.amazonaws.com/35/ffde2b03e1a52ae0ea472f0f5d111c/Pirelli_hat_img.png" }
       %meta{:property=>'og:title', :content=>"PIRELLI PODIUM CAP REPLICA" }
       %meta{:property=>'og:description', :content=>"Wear it and feel the race with a replica of the Podium Cap. Only for champions." }
       %meta{:name=>'description', :content=>"Wear it and feel the race with a replica of the Podium Cap. Only for champions." }
       %title PIRELLI PODIUM CAP REPLICA
     - if @app_id == 168972276525968
-      %meta{:property=>'og:image', :content=>"http://i1025.photobucket.com/albums/y320/Wishpot_photos/pirelli/Pirelli_hat_img.png" }
+      %meta{:property=>'og:type', :content=>"product" }
+      %meta{:property=>'og:image', :content=>"https://vp-welcome.s3.amazonaws.com/35/ffde2b03e1a52ae0ea472f0f5d111c/Pirelli_hat_img.png" }
       %meta{:property=>'og:title', :content=>"PIRELLI PODIUM CAP REPLICA FOR KIDS" }
       %meta{:property=>'og:description', :content=>"Wear it and feel the race with a replica of the Podium Cap. Only for champions." }
       %meta{:name=>'description', :content=>"Wear it and feel the race with a replica of the Podium Cap. Only for champions." }
       %title PIRELLI PODIUM CAP REPLICA FOR KIDS
     - if @app_id == 247848525263697
-      %meta{:property=>'og:image', :content=>"http://i1025.photobucket.com/albums/y320/Wishpot_photos/pirelli/Pirelli_wristbands_img.png" }
+      %meta{:property=>'og:type', :content=>"product" }
+      %meta{:property=>'og:image', :content=>"https://vp-welcome.s3.amazonaws.com/09/d95a5823a42668c4a1947818a57c0b/Pirelli_wristbands_img.png" }
       %meta{:property=>'og:title', :content=>"RUBBER WRISTBAND" }
       %meta{:property=>'og:description', :content=>"Grip and performance of P Zero and Cinturato tyres on your wrist, a unique and exclusive set of bracelets." }
       %meta{:name=>'description', :content=>"Grip and performance of P Zero and Cinturato tyres on your wrist, a unique and exclusive set of bracelets." }
       %title RUBBER WRISTBAND
     - if @app_id == 275513219154917
-      %meta{:property=>'og:image', :content=>"http://i1025.photobucket.com/albums/y320/Wishpot_photos/pirelli/pirelli_keychain_img.png" }
+      %meta{:property=>'og:type', :content=>"product" }
+      %meta{:property=>'og:image', :content=>"https://vp-welcome.s3.amazonaws.com/9f/614a7905f8267f6289fca07d86e3a4/pirelli_keychain_img.png" }
       %meta{:property=>'og:title', :content=>"TYRE KEY RING" }
       %meta{:property=>'og:description', :content=>"1:20 replica of the original Pirelli racing tyre. Always in your pocket." }
       %meta{:name=>'description', :content=>"1:20 replica of the original Pirelli racing tyre. Always in your pocket." }
       %title TYRE KEY RING
     - if @app_id == 139441986157918
-      %meta{:property=>'og:image', :content=>"http://i1025.photobucket.com/albums/y320/Wishpot_photos/pirelli/pirelli_umbrella_img.png" }
+      %meta{:property=>'og:type', :content=>"product" }
+      %meta{:property=>'og:image', :content=>"https://vp-welcome.s3.amazonaws.com/93/3420f156280b7799dc82fa9d57f56b/pirelli_umbrella_img.png" }
       %meta{:property=>'og:title', :content=>"P ZERO UMBRELLA" }
       %meta{:property=>'og:description', :content=>"Protect yourself in any weather condition with the P Zero umbrella (golf size)." }
       %meta{:name=>'description', :content=>"Protect yourself in any weather condition with the P Zero umbrella (golf size)." }
       %title P ZERO UMBRELLA
     - if @app_id == 280876111946663
-      %meta{:property=>'og:image', :content=>"http://i1025.photobucket.com/albums/y320/Wishpot_photos/pirelli/pirelli_lanyard_img.png" }
+      %meta{:property=>'og:type', :content=>"product" }
+      %meta{:property=>'og:image', :content=>"https://vp-welcome.s3.amazonaws.com/dc/c58349baf360ea2d55a26a6d2b8ced/pirelli_lanyard_img.png" }
       %meta{:property=>'og:title', :content=>"P ZERO USB LANYARD" }
       %meta{:property=>'og:description', :content=>"Carry your data with safety and style. USB 4GB capacity." }
       %meta{:name=>'description', :content=>"Carry your data with safety and style. USB 4GB capacity." }

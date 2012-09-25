@@ -1,2 +1,21 @@
+<<<<<<< HEAD
 .project
 db/*.sqlite3
+=======
+*.rbc
+*.sassc
+.sass-cache
+capybara-*.html
+.rspec
+/.bundle
+/vendor/bundle
+/log/*
+/tmp/*
+/db/*.sqlite3
+/public/system/*
+/coverage/
+/spec/tmp/*
+**.orig
+rerun.txt
+pickle-email-*.html
+>>>>>>> 2144826be536157557ac3cc82d21ef5200e159e2
